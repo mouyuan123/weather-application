@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+/* Applicable to our components in (Dark mode) */
+.bg-color-dark{
+    /* Mix the colors from left to right */
+    background: linear-gradient(to right,#395B64,#2C3333);
+  }
+  
+.font-contrast-color{
+color: white;
+}
