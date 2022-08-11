@@ -1,9 +1,15 @@
 /* Applicable to our components in (Dark mode) */
-.bg-color-dark{
-    /* Mix the colors from left to right */
-    background: linear-gradient(to right,#395B64,#2C3333);
-  }
-  
-.font-contrast-color{
-color: white;
+
+.bg-color-dark {
+    /* Mix the colors from left to right (Applicable to page background, sidebar and header color,*/
+    background: linear-gradient(to right, #395B64, #2C3333);
+}
+
+.font-contrast-color {
+    color: white;
+}
+
+.dark-mode-card-color {
+    /* Mix the colors from left to right (Applicable to each weather card color*/
+    background: linear-gradient(to right, #4e7580, #0a0c0c);
 }

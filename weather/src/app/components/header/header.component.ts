@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
   // Allows me to toggle between light & dark mode
   @Output() toggleMode = new EventEmitter();
   // Check whether to change to dark mode
-  isDarkMode: boolean = false;
+  @Input() isDarkMode!: boolean;
 
   constructor() { }
 
