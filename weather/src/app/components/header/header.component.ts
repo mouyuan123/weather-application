@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PageModeService } from 'src/app/services/page-mode.service';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,7 @@ export class HeaderComponent implements OnInit {
   // Check whether to change to dark mode
   @Input() isDarkMode!: boolean;
 
-  constructor() { }
+  constructor(private pm: PageModeService) { }
 
   ngOnInit(): void {
   }
@@ -24,6 +25,11 @@ export class HeaderComponent implements OnInit {
 
   togglePageMode(): void{
     this.isDarkMode = !this.isDarkMode;
+    this.setPageMode();
     this.toggleMode.emit();
+  }
+
+  setPageMode(): void{
+    this.pm.setPageMode();
   }
 }

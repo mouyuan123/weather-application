@@ -21,10 +21,10 @@
                 </section>
             </nav>
         </aside>
-        <div class="col" [ngClass]="{'bg-color-dark':darkModeActive, 'font-contrast-color':darkModeActive}">
+        <div class="col" [ngClass]="{'bg-color-dark':darkModeActive, 'font-contrast-color':darkModeActive, 'bg-color-light':!darkModeActive}">
             <!-- Main contents here -->
             <main>
-                <app-home [isDarkModeActive]="darkModeActive"></app-home>
+                <router-outlet></router-outlet>
             </main>
         </div>
     </div>

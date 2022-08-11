@@ -1,8 +1,13 @@
 /* Applicable to our components in (Dark mode) */
 
+.bg-color-light {
+    /* Mix the colors from left to right (Applicable to page background, sidebar and header color,*/
+    background: linear-gradient(to right, #f5f5f5, #c1f5f7);
+}
+
 .bg-color-dark {
     /* Mix the colors from left to right (Applicable to page background, sidebar and header color,*/
-    background: linear-gradient(to right, #395B64, #2C3333);
+    background: linear-gradient(to right, #315964, #2C3333);
 }
 
 .font-contrast-color {
@@ -11,5 +16,10 @@
 
 .dark-mode-card-color {
     /* Mix the colors from left to right (Applicable to each weather card color*/
-    background: linear-gradient(to right, #4e7580, #0a0c0c);
+    background: linear-gradient(to right, #426c77, #0a0c0c);
+}
+
+.dark-mode-add-card-color {
+    /* Mix the colors from left to right (Applicable to add weather card only*/
+    background: grey;
 }

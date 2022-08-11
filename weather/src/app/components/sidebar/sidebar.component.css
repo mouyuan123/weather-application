@@ -70,7 +70,8 @@
 }
 
 .menu-header {
-    background: linear-gradient(to right, #fcad64, #d9e288);
+    /* background: linear-gradient(to right, #fcad64, #d9e288); */
+    background: linear-gradient(to right, #baebfa, #c0d6f8);
     display: grid;
     grid-template-rows: 1fr 4fr;
     grid-template-columns: 1fr 4fr;

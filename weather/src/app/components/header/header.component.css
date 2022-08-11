@@ -5,7 +5,8 @@
 
 .bg-color {
     /* Mix the colors from left to right */
-    background: linear-gradient(to right, rgb(248, 248, 118), rgb(248, 226, 226));
+    /* background: linear-gradient(to right, rgb(248, 248, 118), rgb(248, 226, 226)); */
+    background-color: white;
 }
 
 

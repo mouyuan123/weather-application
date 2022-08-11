@@ -5,8 +5,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  {path: '', redirectTo:'/home', pathMatch:'full'},
-  { path: 'home', component: HomeComponent }
+  { path: '', redirectTo:'/home', pathMatch:'full'},
+  { path: 'home', component: HomeComponent },
+  { path: 'add-weather', loadChildren: () => import('./modules/add-weather/add-weather.module').then(m => m.AddWeatherModule) },
+  { path: 'weather-details/:code', loadChildren: () => import('./modules/weather-details/weather-details.module').then(m => m.WeatherDetailsModule) }
 ]
 
 @NgModule({
