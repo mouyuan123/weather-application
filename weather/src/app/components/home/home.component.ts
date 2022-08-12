@@ -1,5 +1,4 @@
-import { ThisReceiver } from '@angular/compiler';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 
 @Component({
@@ -8,19 +7,20 @@ import { PageModeService } from 'src/app/services/page-mode.service';
   styleUrls: ['./home.component.css','../../../styles.css']
 })
 export class HomeComponent implements OnInit{
-  @Input() isDarkModeActive!:boolean;
   isDarkMode!: boolean;
-
 
   constructor(private pm: PageModeService) { }
 
   ngOnInit(): void {
    this.getPageMode();
-   console.log(this.isDarkMode);
   }
 
-
+  /**
+   * As a projection to get the page mode from the "PageModeService"
+   * Projection: Get the data from a producer to process the data / carry out other business logic
+   *             while retaining the original data source
+   */
   getPageMode(): void{
-    this.pm.getPageMode().subscribe(pageMode => {this.isDarkMode = pageMode; console.log(pageMode)});
+    this.pm.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
   }
 }

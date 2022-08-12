@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageModeService } from 'src/app/services/page-mode.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,13 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class SidebarComponent implements OnInit {
   // To check whether to show the sidebar menu
   showMenu: boolean = true;
-  // To check whether t display the contents in light mode / dark mode
-  darkModeActive: boolean = false;
+  // To check whether to display the contents in light mode / dark mode
+  isDarkMode!: boolean;
 
 
-  constructor() { }
+  constructor(private pm: PageModeService) { }
 
   ngOnInit(): void {
+    this.getPageMode();
   }
 
   // Toggle the display of sidebar menu
@@ -22,8 +24,12 @@ export class SidebarComponent implements OnInit {
     this.showMenu = !this.showMenu;
   }
 
-  // Toggle between light mode and dark mode
-  modeToggleSwitch(): void{
-    this.darkModeActive = !this.darkModeActive;
+  /**
+   * As a projection to get the page mode from the "PageModeService"
+   * Projection: Get the data from a producer to process the data / carry out other business logic
+   *             while retaining the original data source
+   */
+  getPageMode(): void{
+    this.pm.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
   }
 }

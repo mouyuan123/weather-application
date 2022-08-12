@@ -1,10 +1,10 @@
 <div class="container-fluid g-0 fixing">
-    <app-header [isDarkMode]="darkModeActive" (isMenuOpened)="toggleMenu()" (toggleMode)="modeToggleSwitch()"></app-header>
+    <app-header (isMenuOpened)="toggleMenu()"></app-header>
     <div class="row g-0">
         <aside class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
             <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu}" (click)="$event.stopImmediatePropagation();">
-                <section class="menu-header" [ngClass]="{'bg-color-dark':darkModeActive, 'font-contrast-color':darkModeActive}">
-                    <span class="greeting__text"><i style="cursor:pointer" class="bi bi-x-lg me-5" [class.font-contrast-color]="darkModeActive" (click)="showMenu = false"></i>&nbsp;Welcome Back</span>
+                <section class="menu-header" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode}">
+                    <span class="greeting__text"><i style="cursor:pointer" class="bi bi-x-lg me-5" [class.font-contrast-color]="isDarkMode" (click)="showMenu = false"></i>&nbsp;Welcome Back</span>
                     <div class="profile-image__container">
                         <img src="https://avatars3.githubusercontent.com/u/5658460?s=460&v=4" alt="profile-image" class="profile__image">
                     </div>
@@ -21,7 +21,7 @@
                 </section>
             </nav>
         </aside>
-        <div class="col" [ngClass]="{'bg-color-dark':darkModeActive, 'font-contrast-color':darkModeActive, 'bg-color-light':!darkModeActive}">
+        <div class="col" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color':isDarkMode, 'bg-color-light':!isDarkMode}">
             <!-- Main contents here -->
             <main>
                 <router-outlet></router-outlet>

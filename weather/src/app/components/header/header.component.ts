@@ -9,10 +9,8 @@ import { PageModeService } from 'src/app/services/page-mode.service';
 export class HeaderComponent implements OnInit {
   // Allows me to open and close the side menu
   @Output() isMenuOpened = new EventEmitter();
-  // Allows me to toggle between light & dark mode
-  @Output() toggleMode = new EventEmitter();
   // Check whether to change to dark mode
-  @Input() isDarkMode!: boolean;
+  isDarkMode!: boolean;
 
   constructor(private pm: PageModeService) { }
 
@@ -23,13 +21,10 @@ export class HeaderComponent implements OnInit {
     this.isMenuOpened.emit();
   }
 
+  // Allows the BehaviorSubject<boolean> to emit whether "true" / "false" as latest value 
+  // whenever the toggle button is clicked
   togglePageMode(): void{
-    this.isDarkMode = !this.isDarkMode;
-    this.setPageMode();
-    this.toggleMode.emit();
-  }
-
-  setPageMode(): void{
     this.pm.setPageMode();
+    this.pm.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
   }
 }
