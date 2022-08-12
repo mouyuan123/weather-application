@@ -1,8 +1,8 @@
-import { UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { WeatherService } from 'src/app/services/weather.service';
+import { countriesList } from 'src/app/countries';
 
 @Component({
   selector: 'app-add-weather',
@@ -10,13 +10,16 @@ import { WeatherService } from 'src/app/services/weather.service';
   styleUrls: ['./add-weather.component.css']
 })
 export class AddWeatherComponent implements OnInit {
+  // Stores the countries that match the search filter
   countries$!: Observable<string[]>;
+  //  Subject can act as both Observables and Observer ( set its latest value by itself using .next() )
   private searchTerm = new Subject<string>();
+  countries: string[] = countriesList;
 
   constructor(private ws: WeatherService) { }
 
+  // Catch each <input> value in the HTML template using subject
   search(country: string){
-    console.log(country);
     this.searchTerm.next(country);
   }
 
@@ -28,13 +31,14 @@ export class AddWeatherComponent implements OnInit {
       // ignore new term if same as previous term
       distinctUntilChanged(),
 
-      // switch to new search observable each time the term changes
-      switchMap((term: string) => this.ws.searchCitiesWeathersbyName(term.toUpperCase())));
-      console.log(this.countries$);
+      // cancels and discards previous search observables, 
+      // returning only the latest search service observable from the most recent http call every 300ms
+      switchMap((term: string) => this.ws.searchCountriesName(term.toUpperCase())));
   }
 
-  searchWeatherbyCountryName(): void{
-    
+  searchWeatherbyCountryName(country: string): void{
+
+    console.log(country);
   }
 
 }

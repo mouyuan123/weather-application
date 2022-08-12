@@ -1,10 +1,41 @@
-<div id="search-component">
-    <label for="search-box">Country Search: </label>
-    <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+<div class="container m-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row">
+                <!-- Search Bar site -->
+                <div class="col-6 d-flex flex-column align-items-start">
+                    <label for="search-country" class="form-label"><h2 class="text">Search Country</h2></label>
+                    <form class="w-75">
+                        <input #searchCountry list='countriesList' class="form-control" placeholder="Search country here...">
+                        <button type="submit" (click)="searchWeatherbyCountryName(searchCountry.value)">Search</button>
+                        <datalist id="countriesList">
+                            <option *ngFor="let country of countries" value={{country}}>
+                        </datalist>
+                    </form>
+                </div>
+                <!-- Weather site -->
+                <div class="col-6">
+                    Column
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <ul class="search-result">
-        <li *ngFor="let country of countries$ | async">
-            <p>{{country}}</p>
+
+<!-- Pass the countries$ as a normal array
+  <div *ngIf='countries$ | async; let countries'>
+    <ul *ngIf="countries.length > 0; else elseState" class="search-result">
+        <li *ngFor="let country of countries">
+            <a>{{country}}</a>
         </li>
     </ul>
 </div>
+Display this template only when there is no country matching the search term
+<ng-template #elseState>
+    <ul class="no-search-result">
+        <li>
+            <a class="text">no result found</a>
+        </li>
+    </ul>
+</ng-template> -->
