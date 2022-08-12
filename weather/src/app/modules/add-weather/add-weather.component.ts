@@ -37,7 +37,6 @@ export class AddWeatherComponent implements OnInit {
   }
 
   searchWeatherbyCountryName(country: string): void{
-
     console.log(country);
   }
 
