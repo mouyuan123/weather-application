@@ -51,6 +51,30 @@ input[type="search"]:focus {
     outline: none;
 }
 
+.search-result-bg{
+    background: rgb(77, 76, 76);
+    overflow: hidden;
+}
+
+.search-result-text{
+    color:rgba(0, 0, 0, 0.555);
+}
+
+.weather {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.min-degree {
+    color: rgb(43, 214, 157);
+}
+
+.max-degree {
+    color: rgb(206, 5, 5);
+}
+
+.country-name {
+    text-transform: uppercase;
+}
 
 /* li {
     list-style-type: none;
