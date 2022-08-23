@@ -8,7 +8,7 @@ import { PageModeService } from 'src/app/services/page-mode.service';
 })
 export class SidebarComponent implements OnInit {
   // To check whether to show the sidebar menu
-  showMenu: boolean = true;
+  showMenu: boolean = false;
   // To check whether to display the contents in light mode / dark mode
   isDarkMode!: boolean;
 

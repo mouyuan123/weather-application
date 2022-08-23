@@ -1,10 +1,9 @@
 <div class="main__container">
     <div class="login-card">
   
-      <main class="login-content">
-        <span class="login-header">Login</span>
+      <main class="login-content" [class.dark_login-content]="isDarkMode">
+        <span class="login-header" [class.font-contrast-color]="isDarkMode">Login</span>
         <!-- login form -->
-  
         <form class="login-form" >
           <input type="email" autofocus placeholder="Email" name="email" class="login-input" required>
           <input type="password" placeholder="Password" name="password" class="login-input" minlength="6"required>

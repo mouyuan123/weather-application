@@ -2,16 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Router } from '@angular/router';
+import { PageModeService } from 'src/app/services/page-mode.service';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.css', '../../../styles.css'],
 })
 export class SignUpComponent implements OnInit {
+  isDarkMode!: boolean;
   signUpForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private firebase: FirebaseService, private router: Router) { }
+  constructor(private fb: FormBuilder, private firebase: FirebaseService, private router: Router, private pms: PageModeService) { }
 
   // Getter methods to get the value of each form control in the form
   get userEmail(): FormControl{
@@ -23,6 +25,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.pms.getPageMode().subscribe(mode => this.isDarkMode = mode);
     // Create a form using reactive form modules
     this.signUpForm = this.fb.group
     (

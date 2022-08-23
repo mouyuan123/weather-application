@@ -11,7 +11,7 @@
     overflow: hidden;
     margin-left: 5%;
   }
-  
+
   .login-card {
     position: relative;
     display: flex;
@@ -41,6 +41,10 @@
     align-items: center;
     animation: fadein 1.5s ease-in-out;
     min-height: 100%;
+  }
+
+  .dark_login-content {
+    background-color: #39437a;
   }
   
   .login-form {
