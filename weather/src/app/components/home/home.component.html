@@ -1,70 +1,37 @@
 <!-- Dislplay all the weather of the countries preferred by the users -->
 <div class="row row-cols-1 row-cols-md-4 g-4 gx-5 m-3 ms-5">
     <!-- Sunny template -->
-    <div class="col">
-        <div class="card shadow rounded w-75">
-            <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
-                <div class="card-body ">
-                    <div class="d-flex flex-column">
-                        <h4 class="country-name">Paris</h4>
-                        <div class="p-2 "><img src="../../../assets/images/sunny-weather.png " alt="sunny day " /></div>
-                        <div>
-                            <h3 class="degree "><strong>37&#176;</strong></h3>
-                            <p class="fs-5 weather mb-0 ">Sunny</p>
-                            <div class='d-flex justify-content-evenly'>
-                                <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
-                                    <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">25</span>
-                                    </div>
-                                    <div>
-                                        <span class="min-degree degree ">Min</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
-                                    <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">40</span>
-                                    </div>
-                                    <div>
-                                        <span class="max-degree degree ">Max</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Cloudy template -->
-    <div class="col">
-        <div class="card shadow rounded w-75 h-100">
-            <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
-                <div class="card-body ">
-                    <div class="d-flex flex-column ">
-                        <h4 class="country-name">Paris</h4>
-                        <div class="p-2 "><img src="../../../assets/images/sunny-weather.png " alt="sunny day " /></div>
-                        <div>
-                            <h3 class="degree "><strong>37&#176;</strong></h3>
-                            <p class="fs-5 weather mb-0 ">Sunny</p>
-                            <div class='d-flex justify-content-evenly'>
-                                <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
-                                    <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">25</span>
-                                    </div>
-                                    <div>
-                                        <span class="min-degree degree ">Min</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
-                                    <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">40</span>
-                                    </div>
-                                    <div>
-                                        <span class="max-degree degree ">Max</span>
+    <ng-container *ngIf="weatherLists">
+        <a *ngFor="let weather of weatherLists">
+            <div class="col">
+                <div class="card shadow rounded w-75">
+                    <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                <h4 class="country-name">{{weather.capital}}</h4>
+                                <div class="p-2 "><img src='{{weather.stateImg}}'/></div>
+                                <div>
+                                    <h3 class="degree"><strong>{{weather.currentTemp}}&#176;</strong></h3>
+                                    <p class="fs-5 weather mb-0">{{weather.currentWeatherState}}</p>
+                                    <div class='d-flex justify-content-evenly'>
+                                        <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
+                                            <div><i class="bi bi-caret-down-fill min-degree "></i></div>
+                                            <div>
+                                                <span class="degree">{{weather.minTemp}}</span>
+                                            </div>
+                                            <div>
+                                                <span class="min-degree degree ">Min</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
+                                            <div><i class="bi bi-caret-up-fill max-degree "></i></div>
+                                            <div>
+                                                <span class="degree">{{weather.maxTemp}}</span>
+                                            </div>
+                                            <div>
+                                                <span class="max-degree degree">Max</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -72,119 +39,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Storming template -->
-    <div class="col">
-        <div class="card shadow rounded w-75 h-100">
-            <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
-                <div class="card-body ">
-                    <div class="d-flex flex-column ">
-                        <h4 class="country-name">Paris</h4>
-                        <div class="p-2 "><img src="../../../assets/images/sunny-weather.png " alt="sunny day " /></div>
-                        <div>
-                            <h3 class="degree "><strong>37&#176;</strong></h3>
-                            <p class="fs-5 weather mb-0 ">Sunny</p>
-                            <div class='d-flex justify-content-evenly'>
-                                <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
-                                    <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">25</span>
-                                    </div>
-                                    <div>
-                                        <span class="min-degree degree ">Min</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
-                                    <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">40</span>
-                                    </div>
-                                    <div>
-                                        <span class="max-degree degree ">Max</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Heavy Rain template -->
-    <div class="col">
-        <div class="card shadow rounded w-75 h-100">
-            <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
-                <div class="card-body ">
-                    <div class="d-flex flex-column ">
-                        <h4 class="country-name">Paris</h4>
-                        <div class="p-2 "><img src="../../../assets/images/sunny-weather.png " alt="sunny day " /></div>
-                        <div>
-                            <h3 class="degree "><strong>37&#176;</strong></h3>
-                            <p class="fs-5 weather mb-0 ">Sunny</p>
-                            <div class='d-flex justify-content-evenly'>
-                                <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
-                                    <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">25</span>
-                                    </div>
-                                    <div>
-                                        <span class="min-degree degree ">Min</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
-                                    <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">40</span>
-                                    </div>
-                                    <div>
-                                        <span class="max-degree degree ">Max</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Snowing template -->
-    <div class="col">
-        <div class="card shadow rounded w-75 h-100">
-            <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
-                <div class="card-body ">
-                    <div class="d-flex flex-column ">
-                        <h4 class="country-name">Paris</h4>
-                        <div class="p-2 "><img src="../../../assets/images/sunny-weather.png " alt="sunny day " /></div>
-                        <div>
-                            <h3 class="degree "><strong>37&#176;</strong></h3>
-                            <p class="fs-5 weather mb-0 ">Sunny</p>
-                            <div class='d-flex justify-content-evenly'>
-                                <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
-                                    <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">25</span>
-                                    </div>
-                                    <div>
-                                        <span class="min-degree degree ">Min</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
-                                    <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                                    <div>
-                                        <span class="degree ">40</span>
-                                    </div>
-                                    <div>
-                                        <span class="max-degree degree ">Max</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </a>
+    </ng-container>
     <!-- Clicks to add the preference country weather dynamically -->
     <div class="col">
         <div class="card shadow rounded w-75 h-100">

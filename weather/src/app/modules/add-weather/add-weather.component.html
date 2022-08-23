@@ -14,43 +14,63 @@
                     </form>
                 </div>
                 <!-- Weather site -->
-                <div class="col-6 search-result-bg">
-                    <h2 *ngIf="isFirstTime" class="search-result-text">Please select a capital and click the "Search" icon / press "Enter" key</h2>
-                    <h2 *ngIf="!isCapitalValid" class="search-result-text text-danger">The input is invalid. Note: only capital cities are supported for now</h2>
-                    <div *ngIf="!isFirstTime && isCapitalValid" class="d-flex flex-column align-items-center mt-2 mb-2">
-                            <h4 class="country-name">Paris</h4>
-                            <div class="p-2"><img src="../../../assets/images/sunny-weather.png " alt="sunny day " />
-                                <h3 class="degree "><strong>37&#176;</strong></h3>
-                                <p class="fs-5 weather mb-0 ">Sunny</p>
-                                <div class='d-flex justify-content-evenly'>
+                <div class="col-6 g-0">
+                    <h2 *ngIf="isFirstTime" class="search-result-text p-2">Please select a capital and click the "Search" icon / press "Enter" key</h2>
+                    <h2 *ngIf="!isCapitalValid" class="search-result-text text-danger p-2">The input is invalid. Note: only capital cities are supported for now</h2>
+                    <ng-container *ngIf="!isFirstTime && isCapitalValid">
+                        <div class="card shadow rounded">
+                            <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
+                                <div class="card-body ">
                                     <div class="d-flex flex-column">
-                                        <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                        <div>
-                                            <span class="degree">25</span>
+                                        <h4 class="country-name">{{capital}}</h4>
+                                        <div class="p-2" [ngSwitch]="true">
+                                            <img *ngSwitchCase="currentWeatherState === 'Clouds'" src="../../../assets/images/cloudy-weather.png " alt="Cloudy day " />
+                                            <img *ngSwitchCase="currentWeatherState === 'Rain' || currentWeatherState === 'Drizzle' || currentWeatherState === 'Mist'" src="../../../assets/images/heavy-rain-weather.png" alt="Raining day " />
+                                            <img *ngSwitchCase="currentWeatherState === 'Storm' || currentWeatherState === 'Thunderstorm'" src="../../../assets/images/storm-weather.png" alt="Thunderstorm day " />
+                                            <img *ngSwitchCase="currentWeatherState === 'Sunny' || currentWeatherState === 'Clear'" src="../../../assets/images/sunny-weather.png " alt="Sunny day " />
+                                            <img *ngSwitchDefault src="../../../assets/images/snowing-weather.png" alt="Snowing day " />
                                         </div>
                                         <div>
-                                            <span class="min-degree ">Min</span>
+                                            <h3 class="degree "><strong>{{currentTemp}}&#176;</strong></h3>
+                                            <p class="fs-5 weather mb-0">{{currentWeatherState}}</p>
+                                            <div class='d-flex justify-content-evenly'>
+                                                <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
+                                                    <div><i class="bi bi-caret-down-fill min-degree "></i></div>
+                                                    <div>
+                                                        <span class="degree ">{{minTemp}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="min-degree degree ">Min</span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
+                                                    <div><i class="bi bi-caret-up-fill max-degree "></i></div>
+                                                    <div>
+                                                        <span class="degree ">{{maxTemp}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="max-degree degree ">Max</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                        <div class="d-grid mt-3">
+                                            <button *ngIf="isAdded" class="btn btn-info" type="button" disabled><strong>Added</strong></button>
+                                            <!-- Disable the "Add" Button once the "Add" Button is clicked -->
+                                            <button *ngIf="!isAdded" class="btn btn-info" type="button" (click)="addCapitals();"><strong>Add</strong></button>
+                                        </div>
+
+                                </div>
                             </div>
-                    </div>
-                    <div class="d-flex flex-column bd-highlight justify-content-center">
-                        <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                        <div>
-                            <span class="degree">40</span>
                         </div>
-                        <div>
-                            <span class="max-degree">Max</span>
-                        </div>
-                    </div>
-                </div>
+                    </ng-container>
             </div>
         </div>
     </div>
-    
-    <button type="button" class="btn btn-info col-2 mt-2" (click)="goBack();"><strong>&lt; Back</strong></button>
 </div>
-
+<button type="button" class="btn btn-info col-2 mt-2" (click)="goBack();"><strong>&lt; Back</strong></button>
+</div>
 
 <!-- Pass the countries$ as a normal array
   <div *ngIf='countries$ | async; let countries'>

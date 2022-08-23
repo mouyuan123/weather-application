@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from 'src/app/services/weather.service';
 import { countriesList } from 'src/app/countries';
-import { Form, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { PageModeService } from 'src/app/services/page-mode.service';
 
 
 @Component({
   selector: 'app-add-weather',
   templateUrl: './add-weather.component.html',
-  styleUrls: ['./add-weather.component.css']
+  styleUrls: ['./add-weather.component.css','../../../styles.css']
 })
 export class AddWeatherComponent implements OnInit {
-  countries: string[] = countriesList;
+  // Check the page mode
+  isDarkMode!: boolean;
+  // addedCapitals: string[] = [];
   // To set the initial value of search input
   searchValue = "";
   // Store the capitals of the countries fetched from the web server (https://restcountries.com/v3.1/all)
@@ -22,10 +25,27 @@ export class AddWeatherComponent implements OnInit {
   isFirstTime = true;
   // Check whether the capital entered is valid
   isCapitalValid = true;
+  // Create a weather instance if the capital exists in OpenWeatherMap API
+  capital!: string;
+  currentWeatherState!: string;
+  stateImg!: string;
+  currentTemp!: number;
+  currentHum!: number;
+  currentWind!: number;
+  maxTemp!: number;
+  minTemp!: number;
+  foreCast!: Array<any>
+  // Check to enable / disbale "Add" button
+  addedCapitals: string[] = [];
+  isAdded!: boolean;
 
-  constructor(private http: HttpClient, private ws: WeatherService, private location: Location) { }
+  constructor(private http: HttpClient, private ws: WeatherService, private location: Location, private pm: PageModeService) { }
 
   ngOnInit(): void {
+
+    // Set the page mode based on the button toggling
+    this.pm.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
+    // Get the list of "Capital" of all the countries from API (https://restcountries.com/v3.1/all)
     this.http.get('https://restcountries.com/v3.1/all')
     .subscribe((countries: any) => {countries.forEach((country: any) => {if(country.capital){ let capital = country.capital[0].toUpperCase(); this.capitals.push(capital);}});
                                     this.capitals.sort()});
@@ -34,14 +54,27 @@ export class AddWeatherComponent implements OnInit {
   searchWeatherByCityName(weatherForm: NgForm): void{
     this.checkCapital(this.searchValue);
     if(this.isCapitalValid){
-      const weather: Subject<string> = this.ws.searchWeatherByCityName(this.searchValue);
-      weather.subscribe(here => console.log(here));
-      this.isFirstTime = false;
-      this.resetForm();
+      this.capital = this.searchValue;
+      this.ws.getWeatherState(this.capital).subscribe(state => {this.currentWeatherState = state; 
+                                                                switch(this.currentWeatherState){
+                                                                  case "Clouds": this.stateImg = '../../assets/images/cloudy-weather.png'; break;
+                                                                  case 'Rain' ||'Drizzle': this.stateImg = '../../assets/images/heavy-rain-weather.png'; break;
+                                                                  case 'Storm' || 'Thunderstorm': this.stateImg = '../../assets/images/storm-weather.png'; break;
+                                                                  case 'Sunny' || 'Clear': this.stateImg ='../../assets/images/sunny-weather.png'; break;
+                                                                  default: this.stateImg = '../../assets/images/snowing-weather.png';
+                                                                
+                                                                }});
+      this.ws.getCurrentTemp(this.capital).subscribe(temp => this.currentTemp = temp);
+      this.ws.getCurrentHum(this.capital).subscribe(humidity => this.currentHum = humidity);
+      this.ws.getCurrentWind(this.capital).subscribe(windSpeed => this.currentWind = windSpeed);
+      this.ws.getMaxTemp(this.capital).subscribe(maxTemp => this.maxTemp = maxTemp);
+      this.ws.getMinTemp(this.capital).subscribe(minTemp => this.minTemp = minTemp);
+      this.ws.getForecast(this.capital).subscribe(forecastOfFiveDays => this.foreCast = forecastOfFiveDays);
+      // Check to enable / disable the button when "Search" icon is clicked
+      this.isAddedButtonNeeded();
     }
-    else{
-      this.isFirstTime = false;
-    }
+    this.resetForm();
+    this.isFirstTime = false;
   }
   
   // Reset the inout value to empty string whenever the form is submitted
@@ -51,7 +84,7 @@ export class AddWeatherComponent implements OnInit {
 
   // Check whether the user choose the capital from the datalist (Only support capitals here)
   checkCapital(userInput: string): void{
-    if(this.capitals.includes(userInput)){
+    if(this.capitals.indexOf(userInput) !== -1){
       this.isCapitalValid = true;
     }
     else{
@@ -65,6 +98,35 @@ export class AddWeatherComponent implements OnInit {
     this.location.back();
   }
 
+  // Add the capital that I want
+  addCapitals(): void{
+    this.ws.addCapitals(this.capital).subscribe(() => console.log("Add a city successfully!"));
+    // Disable "Add" button when it is clicked
+    this.isAddedButtonNeeded();
+  }
+
+  // Check whether the "Add" button should be disabled
+  isAddedButtonNeeded(): void{
+    this.ws.getCapitals().subscribe(capitals => {this.addedCapitals = capitals;
+      if(this.addedCapitals.indexOf(this.capital) !== -1){
+        this.isAdded = true;
+      }
+      else{
+        this.isAdded = false;
+      }
+    });
+  }
+  // If the "Add" button is clicked, I will add the capital weather into the JSON-Server I created here
+  // addWeather(): void{
+  //   this.ws.addWeather(this.capital, this.currentWeatherState, this.stateImg, this.currentTemp, this.currentHum, this.currentWind, this.maxTemp, this.minTemp, this.foreCast).subscribe(() => console.log("You have added a weather successfully!"));
+  //   this.addedCapitals.push(this.capital);
+  // }
+
+  // // Check whether to enable or disable "Add" button
+  // isAddButtonNeeded(): boolean{
+  //   console.log(this.addedCapitals);
+  //   return this.addedCapitals.includes(this.capital);
+  // }
 }
 
 

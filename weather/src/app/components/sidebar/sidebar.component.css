@@ -116,6 +116,13 @@
     width: 100%;
 }
 
+.link-active{
+    color: #495CFC;
+    border-bottom: 1px solid #495CFC;
+    border-left: 1.5px solid #495CFC;
+    font-weight: bold;
+}
+
 .profile-image__container {
     grid-area: image;
     margin-right: 0.5rem;
@@ -277,6 +284,7 @@
     background: linear-gradient(to bottom, #B290FF, #2E1D65);
     transition: opacity 300ms linear;
 }
+
 
 
 /*

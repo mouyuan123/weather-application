@@ -13,11 +13,18 @@
                         <span class="email__text">Gmail</span>
                     </div>
                 </section>
-                <section class="menu-body">
-
-                </section>
-                <section class="menu-footer">
-
+                <section class="menu-body" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode}">
+                    <ul class="nav flex-column">
+                        <li class="nav-item ms-5 me-5 mb-2">
+                          <a routerLink="/home" routerLinkActive="link-active" class="nav-link " aria-current="page"><i class="bi bi-house me-2"></i>&nbsp;Home</a>
+                        </li>
+                        <li class="nav-item ms-5 me-5 mb-2">
+                          <a routerLink="/add-weather" routerLinkActive="link-active" class="nav-link"><i class="bi bi-plus-circle me-2"></i>&nbsp;Add City</a>
+                        </li>
+                        <li class="nav-item ms-5 me-5 mb-2">
+                          <a routerLink="/login" routerLinkActive="link-active" class="nav-link"><i class="bi bi-box-arrow-right me-2"></i>&nbsp;Log Out</a>
+                        </li>
+                      </ul>
                 </section>
             </nav>
         </aside>
