@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'add-weather', loadChildren: () => import('./modules/add-weather/add-weather.module').then(m => m.AddWeatherModule) },
-  { path: 'weather-details/:code', loadChildren: () => import('./modules/weather-details/weather-details.module').then(m => m.WeatherDetailsModule) }
+  { path: 'weather-details', loadChildren: () => import('./modules/weather-details/weather-details.module').then(m => m.WeatherDetailsModule) }
 ]
 
 @NgModule({

@@ -1,23 +1,23 @@
 <!-- Dislplay all the weather of the countries preferred by the users -->
 <div class="row row-cols-1 row-cols-md-4 g-4 gx-5 m-3 ms-5">
     <!-- Sunny template -->
-    <ng-container *ngIf="weatherLists">
-        <a *ngFor="let weather of weatherLists">
+    <ng-container *ngIf="capitals">
+        <a (click)="viewWeatherDetails(capital)" *ngFor="let capital of capitals; let i = index">
             <div class="col">
                 <div class="card shadow rounded w-75">
                     <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
                         <div class="card-body">
                             <div class="d-flex flex-column">
-                                <h4 class="country-name">{{weather.capital}}</h4>
-                                <div class="p-2 "><img src='{{weather.stateImg}}'/></div>
+                                <h4 class="country-name">{{capital}}</h4>
+                                <div class="p-2"><img src='{{stateImg[i]}}'/></div>
                                 <div>
-                                    <h3 class="degree"><strong>{{weather.currentTemp}}&#176;</strong></h3>
-                                    <p class="fs-5 weather mb-0">{{weather.currentWeatherState}}</p>
+                                    <h3 class="degree"><strong>{{currentTemp[i]}}&#176;</strong></h3>
+                                    <p class="fs-5 weather mb-0">{{currentWeatherState[i]}}</p>
                                     <div class='d-flex justify-content-evenly'>
                                         <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
                                             <div><i class="bi bi-caret-down-fill min-degree "></i></div>
                                             <div>
-                                                <span class="degree">{{weather.minTemp}}</span>
+                                                <span class="degree">{{minTemp[i]}}</span>
                                             </div>
                                             <div>
                                                 <span class="min-degree degree ">Min</span>
@@ -26,7 +26,7 @@
                                         <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
                                             <div><i class="bi bi-caret-up-fill max-degree "></i></div>
                                             <div>
-                                                <span class="degree">{{weather.maxTemp}}</span>
+                                                <span class="degree">{{maxTemp[i]}}</span>
                                             </div>
                                             <div>
                                                 <span class="max-degree degree">Max</span>

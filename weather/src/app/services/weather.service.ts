@@ -18,14 +18,9 @@ export class WeatherService {
 constructor(private http: HttpClient) { }
 
 // Search the weather of specific capital of a country (Accepts only Celsius format here => units='metric')
-searchWeatherByCityName(cityName: string): Subject<string>{
-  const dataSub = new Subject<string>();
-  this.http.get(
+searchWeatherByCityName(cityName: string): Observable<any>{
+   return this.http.get<any>(
   `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
-  .subscribe((data: any) => {
-      dataSub.next(data['weather']);
-    })
-  return dataSub;
 }
 
 // Retrieve the state of the weather (E.g., Clear, Cloudy, Rain)
@@ -116,22 +111,9 @@ getForecast(cityName: string): Subject<Array<any>>  {
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
     .subscribe((weather: any) => {
       dataSubject.next(weather.list);
+
     });
   return dataSubject;
-}
-
-addCapitals(capitalName: string): Observable<string[]>{
-  this.capitalAdded.push(capitalName);
-  return of(this.capitalAdded);
-}
-
-getCapitals(): Observable<string[]>{
-  return of(this.capitalAdded);
-}
-
-deleteCapitals(capitalName: string): Observable<string[]>{
-  this.capitalAdded = this.capitalAdded.filter(capital => capital !== capitalName);
-  return of(this.capitalAdded);
 }
 
 // // Add the weather chosen by me into the virtual database (weather.json)

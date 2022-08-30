@@ -16,7 +16,5 @@ export interface weather{
     // Retrieve the minimum temparature of the country ( 3 hours interval)
     minTemp: number;
     // Get weather data for 5 upcoming days
-    foreCast: Array<any>
-    // Check whether the specific weather is added
-    isAdded: boolean
+    foreCast?: Map<string, Array<string>>
 }

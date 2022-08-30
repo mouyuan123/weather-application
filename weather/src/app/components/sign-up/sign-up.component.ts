@@ -38,10 +38,7 @@ export class SignUpComponent implements OnInit {
 
   // Create a new user on form submission ( If the email exists, the new user will not be registered again )
   onSubmit(): void{
-    this.firebase.signUpNewUser(this.userEmail.value, this.password.value)
-    .then(() => {console.log("You have registered successfully!"); this.router.navigateByUrl('/login'); this.signUpForm.reset()})
-    .catch((error) => 
-        {if(error.code == 'auth/email-already-in-use'){console.log('Email already exists, please try again!')}
-         else{console.log("There was a problem while trying to sign up a new user: "+error.details)}});
+    this.firebase.signUpNewUser(this.userEmail.value, this.password.value);
+    this.signUpForm.reset();
   }
 }

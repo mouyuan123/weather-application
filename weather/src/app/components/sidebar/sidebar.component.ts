@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,7 @@ export class SidebarComponent implements OnInit {
   isDarkMode!: boolean;
 
 
-  constructor(private pm: PageModeService) { }
+  constructor(private pm: PageModeService, public firebase: FirebaseService) { }
 
   ngOnInit(): void {
     this.getPageMode();

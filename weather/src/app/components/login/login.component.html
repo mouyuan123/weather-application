@@ -4,10 +4,10 @@
       <main class="login-content" [class.dark_login-content]="isDarkMode">
         <span class="login-header" [class.font-contrast-color]="isDarkMode">Login</span>
         <!-- login form -->
-        <form class="login-form" >
-          <input type="email" autofocus placeholder="Email" name="email" class="login-input" required>
-          <input type="password" placeholder="Password" name="password" class="login-input" minlength="6"required>
-          <input type="submit" name="submit" value="Login" class="login-btn">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" >
+          <input [formControl]="userEmail" type="email" autofocus placeholder="Email" name="email" class="login-input" required>
+          <input [formControl]="password" type="password" placeholder="Password" name="password" class="login-input" required>
+          <input type="submit" name="submit" value="Login" class="login-btn" [disabled]="!loginForm.valid" [class.btn-disabled]="!loginForm.valid">
         </form>
         <div class="signup-link-wrapper">
           <span class="signup-notice">Don't have an account?</span>
