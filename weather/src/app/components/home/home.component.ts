@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { WeatherService } from 'src/app/services/weather.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Router } from '@angular/router';
-import { interval } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css','../../../styles.css']
 })
-export class HomeComponent implements OnInit{
+
+
+export class HomeComponent implements OnInit, OnDestroy{
   isDarkMode!: boolean;
   // Store the weather information of each capital in corresponding inde of different array
   capitals: string[] = [];
@@ -21,6 +23,8 @@ export class HomeComponent implements OnInit{
   currentWind: number[] = [];
   maxTemp: number[] = [];
   minTemp: number[] = [];
+  // 
+  subscription!: Subscription;
 
   constructor(private pm: PageModeService, private ws: WeatherService, private firebase: FirebaseService, private router: Router) { }
 
@@ -43,7 +47,7 @@ export class HomeComponent implements OnInit{
    * Retreive the capital list that is added by the user (to display real time weather [3 hours interval] of each capital)
    */
   getUserCapitalList(): void{
-    this.firebase.getUserCapitalList().subscribe((user: any) => user.capitalList.forEach((element: any) => {
+    this.subscription = this.firebase.getUserCapitalList().subscribe((user: any) => user.capitalList.forEach((element: any) => {
       this.capitals.push(element);
       this.ws.getWeatherState(element).subscribe(state => {this.currentWeatherState.push(state); 
         switch(state){
@@ -63,5 +67,9 @@ export class HomeComponent implements OnInit{
 
   viewWeatherDetails(capital: string): void{
     this.router.navigate(['/weather-details'], {queryParams:{country: capital}})
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }

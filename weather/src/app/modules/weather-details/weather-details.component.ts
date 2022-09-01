@@ -41,6 +41,7 @@ export class WeatherDetailsComponent implements OnInit {
   }
 
   getClickedCapitalDetails(): void{
+    // Retrieve the current capital clicked from the query params of the URL
     this.clickedCapital = this.ar.snapshot.queryParams['country'];
     if(this.clickedCapital){
       this.ws.getWeatherState(this.clickedCapital).subscribe(state => {this.currentWeatherState = state; 
@@ -64,7 +65,7 @@ export class WeatherDetailsComponent implements OnInit {
           this.today = days[todayNumberInWeek];
           forecastOfFiveDays.forEach(forecast =>
           {
-            // toDateStrin() => returns current day in format of (Day Month dateOfDay Year)
+            // toDateString() => returns current day in format of (Day Month dateOfDay Year)
             const date: string = new Date(forecast['dt_txt']).toDateString().split(' ')[0];
             // Skip the current day of the week because it will always be displayed
             if(date !== this.today){
@@ -95,9 +96,12 @@ export class WeatherDetailsComponent implements OnInit {
               }
             }
           });
+          // Loop through the key value of each key-value pair
           Object.keys(this.forecast).forEach(day =>
             {
+              // Retrieve the average temperature among the forecast of 5 days
               this.forecast[day].avgTemp = Math.round(this.forecast[day].avgTemp / this.forecast[day].counter);
+              // Retrieve the highest occurences among the weather state counters
               let highest: number = Math.max
               (
                 this.forecast[day].CloudsCounter, 
@@ -110,6 +114,7 @@ export class WeatherDetailsComponent implements OnInit {
                 this.forecast[day].ClearCounter, 
                 this.forecast[day].SnowCounter
               );
+              // Set the forecast weather state and state image corresponding to the weather with the highest occurences
               switch(true){
                 case highest === this.forecast[day].CloudsCounter: this.forecast[day]['predictedState'] = 'Clouds'; this.forecast[day]['stateImg'] = '../../../assets/images/cloudy-weather.png'; break;
                 case highest === this.forecast[day].RainCounter: this.forecast[day]['predictedState'] = 'Rain'; this.forecast[day]['stateImg'] = '../../../assets/images/heavy-rain-weather.png'; break;
@@ -122,13 +127,12 @@ export class WeatherDetailsComponent implements OnInit {
                 default: this.forecast[day]['predictedState'] = 'Snow'; this.forecast[day]['stateImg'] = '../../../assets/images/snowing-weather.png'; break;
               }
             })
-            console.log(this.forecast);
       });
     }
   }
 
+  // Increment the weather counter by 1 whenever it appears in the forecast of same day
   addWeatherStateCounter(weatherState: string, day: string): void{
-    console.log(weatherState);
     switch(weatherState){
       case 'Clouds': this.forecast[day].CloudsCounter++; break;
       case 'Rain': this.forecast[day].RainCounter++; break;
@@ -140,5 +144,10 @@ export class WeatherDetailsComponent implements OnInit {
       case 'Clear': this.forecast[day].ClearCounter++; break;
       default: this.forecast[day].SnowCounter++; break;
     }
+  }
+
+  // By default, "keyvalue" pipe will sort the map/array/record based on the key. Returning 0 will avoid it to do the default sorting.
+  returnZero(){
+    return 0;
   }
 }
