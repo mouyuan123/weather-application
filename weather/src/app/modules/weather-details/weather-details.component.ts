@@ -8,7 +8,7 @@ import { forecast } from 'src/app/forecast';
 @Component({
   selector: 'app-weather-details',
   templateUrl: './weather-details.component.html',
-  styleUrls: ['./weather-details.component.css']
+  styleUrls: ['./weather-details.component.css', '../../../styles.css']
 })
 export class WeatherDetailsComponent implements OnInit {
 
@@ -28,6 +28,8 @@ export class WeatherDetailsComponent implements OnInit {
   forecast: Record<string,any> = {};
   // Determine the current day
   today!: string;
+  //
+  isLoading = true;
 
   constructor(private pms: PageModeService, private ws: WeatherService, private ar: ActivatedRoute) { }
 
@@ -41,6 +43,7 @@ export class WeatherDetailsComponent implements OnInit {
   }
 
   getClickedCapitalDetails(): void{
+    this.isLoading = true;
     // Retrieve the current capital clicked from the query params of the URL
     this.clickedCapital = this.ar.snapshot.queryParams['country'];
     if(this.clickedCapital){
@@ -127,6 +130,7 @@ export class WeatherDetailsComponent implements OnInit {
                 default: this.forecast[day]['predictedState'] = 'Snow'; this.forecast[day]['stateImg'] = '../../../assets/images/snowing-weather.png'; break;
               }
             })
+            this.isLoading = false;
       });
     }
   }

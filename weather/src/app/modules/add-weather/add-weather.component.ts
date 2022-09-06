@@ -39,6 +39,8 @@ capitalList!: string[];
 isAdded!: boolean;
 // Toggle between "Add" & "Added" text for submit button
 btnText!: string;
+//
+isLoading = true;
 
 
 constructor(private http: HttpClient, private ws: WeatherService, private location: Location, private pm: PageModeService, private firebase: FirebaseService) { }
@@ -49,7 +51,8 @@ ngOnInit(): void {
   // Get the list of "Capital" of all the countries from API (https://restcountries.com/v3.1/all)
   this.http.get('https://restcountries.com/v3.1/all')
   .subscribe((countries: any) => {countries.forEach((country: any) => {if(country.capital){ let capital = country.capital[0].toUpperCase(); this.capitals.push(capital);}});
-                                  this.capitals.sort()});
+                                  this.capitals.sort();
+                                this.isLoading = false;});
   // Get the capital lists of specific user from the Firestore
   this.getUserCapitalList();
 }
@@ -119,9 +122,11 @@ toggleAddWeatherBtn(): void{
 }
 
 addUserCapitalWeather(capital: string): void{
+  this.isLoading = true;
   this.firebase.addUserCapitalWeather(capital)
   .then(value =>{this.isAdded = value; 
-    this.toggleAddWeatherBtn()});
+    this.toggleAddWeatherBtn();
+  this.isLoading = false;});
 }
 }
 /** 

@@ -1,5 +1,5 @@
+<div class="loader-container" *ngIf="isLoading"><div class="loader"></div></div>
 <div class="container m-5 main-container">
-
         <div class="card shadow-sm add-weather-card">
             <div class="card-body pt-0 pb-0 pe-0 overflow-hidden position-relative">
                 <div class="row">
@@ -19,8 +19,8 @@
                         <h2 *ngIf="isFirstTime" class="search-result-text p-2">Please select a capital and click the "Search" icon / press "Enter" key</h2>
                         <h2 *ngIf="!isCapitalValid" class="search-result-text text-danger p-2">The input is invalid. Note: only capital cities are supported for now</h2>
                         <ng-container *ngIf="!isFirstTime && isCapitalValid">
-                            <div class="card shadow rounded weather-details">
-                                <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
+                            <div class="card shadow rounded">
+                                <div class="weather-details card text-center" [class.dark-mode-card-color]="isDarkMode">
                                     <div class="card-body ">
                                         <div class="d-flex flex-column">
                                             <h4 class="country-name">{{capital}}</h4>
@@ -56,12 +56,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            <div class="d-grid mt-3">
-                                                <button class="btn btn-info" type="button" (click)="addUserCapitalWeather(capital)" [disabled]="isAdded"><strong>{{btnText}}</strong></button>
-                                                <!-- Disable the "Add" Button once the "Add" Button is clicked -->
-                                                <!-- <button *ngIf="!isAdded" class="btn btn-info" type="button"><strong>Add</strong></button> -->
-                                            </div>
+                                        <div class="d-grid">
+                                            <button class="m-2 btn btn-info" type="button" (click)="addUserCapitalWeather(capital)" [disabled]="isAdded"><strong>{{btnText}}</strong></button>
+                                            <!-- Disable the "Add" Button once the "Add" Button is clicked -->
+                                            <!-- <button *ngIf="!isAdded" class="btn btn-info" type="button"><strong>Add</strong></button> -->
+                                        </div>
                                     </div>
+                                  
                                 </div>
                             </div>
                         </ng-container>

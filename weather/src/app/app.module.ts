@@ -3,6 +3,11 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+// import { ServiceWorkerModule } from '@angular/service-worker';
+
+
 // Firebase Integration for sign up, login and storing capital chosen by myself
 import { AngularFireModule} from '@angular/fire/compat'
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
@@ -18,6 +23,9 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 // Services
 import { PageModeService } from './services/page-mode.service';
+import { ErrorSuccessMessageService } from './services/error-success-message.service';
+import { WeatherService } from './services/weather.service';
+import { FirebaseService } from './services/firebase.service';
 
 // Environment
 import { environment } from 'src/environments/environment';
@@ -39,9 +47,17 @@ import { environment } from 'src/environments/environment';
     //  Make sure I add these 2 lines for firebase configuration
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule, // for database
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    // ServiceWorkerModule.register('ngsw-worker.js', {
+    //   enabled: environment.production,
+    //   // Register the ServiceWorker as soon as the application is stable
+    //   // or after 30 seconds (whichever comes first).
+    //   registrationStrategy: 'registerWhenStable:30000'
+    // })
   ],
-  providers: [PageModeService],
+  providers: [PageModeService, ErrorSuccessMessageService, WeatherService, FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

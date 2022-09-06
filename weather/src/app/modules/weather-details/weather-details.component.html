@@ -1,7 +1,9 @@
 <ng-container *ngIf="clickedCapital">
+  <div class="loader-container" *ngIf="isLoading"><div class="loader"></div></div>
   <svg class="back__button" routerLink="/home" viewBox="4085 152 98.5 126" tabindex="0">
     <defs>
-      <style>.a {
+      <style>
+      .a {
         fill: #2b244d;
       }
 
@@ -23,14 +25,19 @@
         font-size: 15px;
         font-family: SegoeUI, Segoe UI, sans-serif;
         letter-spacing: 0.4em;
-      }</style>
+      }
+
+      .dark__d{
+        fill: white;
+      }
+    </style>
     </defs>
     <g transform="translate(3980)">
       <circle class="a" cx="39" cy="39" r="39" transform="translate(105 152)"></circle>
       <line class="b" transform="translate(123.5 190.5)" x1="80"></line>
       <line class="b" transform="translate(123.5 164.5)" x2="26" y1="26"></line>
       <line class="c" transform="translate(123.5 190.5)" x1="26" y1="27"></line>
-      <text class="d" transform="translate(117 274)">
+      <text class="d" [ngClass]="{'dark__d': isDarkMode}" transform="translate(117 274)">
         <tspan x="0" y="0">BACK</tspan>
       </text>
     </g>
@@ -42,24 +49,24 @@
           <div class="today-weather__container">
             <!--{{today}}-->
             <div class="temp-state__container">
-              <span class="temperature__text">{{currentTemp}}°</span>
-              <span class="weather-state__text">{{currentWeatherState}}</span>
+              <span class="temperature__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{currentTemp}}°</span>
+              <span class="weather-state__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{currentWeatherState}}</span>
             </div>
             <div class="hum-wind__container">
               <div class="hum__container">
-                <span class="hum__text">humidity</span>
-                <span class="hum-value__text">{{currentHum}} %</span>
+                <span class="hum__text" [ngClass]="{'font-contrast-color': isDarkMode} ">humidity</span>
+                <span class="hum-value__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{currentHum}} %</span>
               </div>
-              <div class="hum-wind__separator">&nbsp;</div>
+              <div class="hum-wind__separator" [ngClass]="{'dark_hum-wind__separator': isDarkMode}">&nbsp;</div>
               <div class="wind__container">
-                <span class="wind__text">wind</span>
-                <span class="wind-value__text">{{currentWind}} K/M</span>
+                <span class="wind__text" [ngClass]="{'font-contrast-color': isDarkMode}">wind</span>
+                <span class="wind-value__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{currentWind}} K/M</span>
               </div>
             </div>
           </div>
           <div class="city-name__container">
-            <div class="city-name__underline">
-              <span class="city-name__text">{{clickedCapital}}</span>
+            <div class="city-name__underline" [ngClass]="{'dark_city-name__underline': isDarkMode}">
+              <span class="city-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{clickedCapital}}</span>
             </div>
           </div>
         </div>
@@ -67,10 +74,10 @@
       <div class="col">
         <section class="forecast__container m-5">
           <div class="day-weather__container" [ngSwitch]="true" *ngFor="let day of forecast | keyvalue: returnZero">
-            <span class="day-name__text">{{day.key}}</span>
+            <span class="day-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.key}}</span>
             <img class='forecast-condition__icon' src='{{day.value.stateImg}}' />
-            <span class="day-temp__text">{{day.value.avgTemp}}°</span>
-            <span class="day-state__text">{{day.value.predictedState}}</span>
+            <span class="day-temp__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.avgTemp}}°</span>
+            <span class="day-state__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.predictedState}}</span>
           </div> 
         </section>
       </div>

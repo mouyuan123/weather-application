@@ -8,12 +8,12 @@
 }
 
 .add-weather-card{
-    min-height: 70vh;
+    min-height: 50vh;
     width: 100%;
 }
 
 .weather-details{
-    min-height: 70vh;
+    min-height: 50vh;
 }
 
 .text {

@@ -37,13 +37,6 @@ export class LoginComponent implements OnInit {
 
   // Login the user to the home page if both the email and password is correct
   onSubmit(): void{
-    this.firebase.signInUser(this.userEmail.value, this.password.value)
-    .then(() => {console.log('You have signed in successfully'); this.router.navigateByUrl('/home')})
-    .catch((error) => 
-      {
-       if(error.code == 'auth/wrong-password'){console.log('Invalid password. Please try again.')}
-       else if (error.code == 'auth/user-not-found'){console.log('User not found. Please try another email')}
-       else{console.log("There was a problem while trying to signing in a user: "+error.details)}
-      });
+    this.firebase.signInUser(this.userEmail.value, this.password.value);
   }
 }

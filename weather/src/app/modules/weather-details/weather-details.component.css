@@ -1,5 +1,5 @@
 .details-page__wrapper {
-  background: linear-gradient(to top, #86DBFF 0%, #e0c3fc 100%);
+  background: linear-gradient(to top, #a7e2fc 0%, #fbfbfc 100%);
   min-height: 100vh;
   width: 70vw;
   position: relative;
@@ -7,7 +7,7 @@
 }
 
 .details-page__wrapper-dark {
-  background: linear-gradient(#FC7DB8, #495CFC);
+  background: linear-gradient(#292bb1, #495CFC);
 }
 
 .background-gradient__circle {
@@ -97,6 +97,10 @@
   box-shadow: 0 3rem 0 0 #000000;
 }
 
+.dark_city-name__underline {
+  box-shadow: 0 3rem 0 0 #ffffff;
+}
+
 .city-name__text {
   text-transform: uppercase;
   letter-spacing: 0.3rem;
@@ -139,6 +143,10 @@
   width: 2px;
   height: 2.5rem;
   background-color: black;
+}
+
+.dark_hum-wind__separator {
+  background-color: rgb(255, 255, 255);
 }
 
 .hum__text, .wind__text {

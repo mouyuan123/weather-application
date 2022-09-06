@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { WeatherService } from 'src/app/services/weather.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -23,8 +23,10 @@ export class HomeComponent implements OnInit, OnDestroy{
   currentWind: number[] = [];
   maxTemp: number[] = [];
   minTemp: number[] = [];
-  // 
+  // Destroy the subscription when the component is destroyed
   subscription!: Subscription;
+  // Display the loading animation when the fetch from API is incomplete
+  isLoading = true;
 
   constructor(private pm: PageModeService, private ws: WeatherService, private firebase: FirebaseService, private router: Router) { }
 
@@ -47,7 +49,8 @@ export class HomeComponent implements OnInit, OnDestroy{
    * Retreive the capital list that is added by the user (to display real time weather [3 hours interval] of each capital)
    */
   getUserCapitalList(): void{
-    this.subscription = this.firebase.getUserCapitalList().subscribe((user: any) => user.capitalList.forEach((element: any) => {
+    this.isLoading = true;
+    this.subscription = this.firebase.getUserCapitalList().subscribe((user: any) => {user.capitalList.forEach((element: any) => {
       this.capitals.push(element);
       this.ws.getWeatherState(element).subscribe(state => {this.currentWeatherState.push(state); 
         switch(state){
@@ -62,7 +65,8 @@ export class HomeComponent implements OnInit, OnDestroy{
       this.ws.getCurrentWind(element).subscribe(windSpeed => this.currentWind.push(windSpeed));
       this.ws.getMaxTemp(element).subscribe(maxTemp => this.maxTemp.push(maxTemp));
       this.ws.getMinTemp(element).subscribe(minTemp => this.minTemp.push(minTemp));
-    }));
+    })
+    this.isLoading = false;});
   }
 
   viewWeatherDetails(capital: string): void{

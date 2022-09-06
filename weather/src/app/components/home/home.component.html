@@ -1,11 +1,12 @@
 <!-- Dislplay all the weather of the countries preferred by the users -->
-<div class="row row-cols-1 row-cols-md-4 g-4 gx-5 m-3 ms-5">
+<div class="loader-container" *ngIf="isLoading"><div class="loader"></div></div>
+<div class="weather-card-container main-container row row-cols-1 row-cols-md-4 m-5">
     <!-- Sunny template -->
     <ng-container *ngIf="capitals">
-        <a (click)="viewWeatherDetails(capital)" *ngFor="let capital of capitals; let i = index">
+        <a class="weather-wrapper mb-5" (click)="viewWeatherDetails(capital)" *ngFor="let capital of capitals; let i = index; let last = last">
             <div class="col">
-                <div class="card shadow rounded w-75">
-                    <div class="card text-center" [class.dark-mode-card-color]="isDarkMode">
+                <div class="card shadow rounded">
+                    <div class="weather-card card text-center" [class.dark-mode-card-color]="isDarkMode">
                         <div class="card-body">
                             <div class="d-flex flex-column">
                                 <h4 class="country-name">{{capital}}</h4>
@@ -43,8 +44,8 @@
     </ng-container>
     <!-- Clicks to add the preference country weather dynamically -->
     <div class="col">
-        <div class="card shadow rounded w-75 h-100">
-            <div class="card text-center" [class.dark-mode-add-card-color]="isDarkMode">
+        <div class="card shadow rounded">
+            <div class="add-weather-card card text-center" [class.dark-mode-add-card-color]="isDarkMode">
                 <div class="card-body ">
                     <div class="d-flex flex-column">
                         <h4 class="country-name">Add City</h4>

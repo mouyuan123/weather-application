@@ -3,10 +3,10 @@
  * Guide to start -> https://openweathermap.org/appid
  */
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, of, Subject, tap, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, Observable, of, Subject, throwError, retry } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-import { weather } from '../weather';
+import { ErrorSuccessMessageService } from './error-success-message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +15,17 @@ export class WeatherService {
   capitalAdded:string[] = [];
   httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
 
-constructor(private http: HttpClient) { }
+constructor(private http: HttpClient, private msg: ErrorSuccessMessageService) { }
 
 // Search the weather of specific capital of a country (Accepts only Celsius format here => units='metric')
 searchWeatherByCityName(cityName: string): Observable<any>{
-   return this.http.get<any>(
-  `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+   return this.http
+   .get<any>(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+   .pipe
+   (
+    retry(1),
+    catchError(this.handleError)
+   )
 }
 
 // Retrieve the state of the weather (E.g., Clear, Cloudy, Rain)
@@ -28,6 +33,11 @@ getWeatherState(cityName: string): Subject<string> {
   const dataSubject = new Subject<string>();
   this.http.get(
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    .pipe
+    (
+      retry(1),
+      catchError(this.handleError)
+    )
     .subscribe((data: any) => {
       dataSubject.next(data['weather'][0].main);
     });
@@ -39,6 +49,11 @@ getCurrentTemp(cityName: string): Subject<number> {
   const dataSubject = new Subject<number>();
   this.http.get(
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    .pipe
+    (
+      retry(1),
+      catchError(this.handleError)
+    )
     .subscribe((weather: any) => {
       dataSubject.next(Math.round(weather.main.temp));
     });
@@ -50,8 +65,12 @@ getCurrentHum(cityName: string): Subject<number> {
   const dataSubject = new Subject<number>();
   this.http.get(
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    .pipe
+    (
+      retry(1),
+      catchError(this.handleError)
+    )
     .subscribe((weather: any) => {
-
       dataSubject.next(weather.main.humidity);
     });
   return dataSubject;
@@ -62,6 +81,11 @@ getCurrentWind(cityName: string): Subject<number>  {
   const dataSubject = new Subject<number>();
   this.http.get(
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    .pipe
+    (
+      retry(1),
+      catchError(this.handleError)
+    )
     .subscribe((weather: any) => {
       dataSubject.next(Math.round(weather.wind.speed));
     });
@@ -74,6 +98,11 @@ getMaxTemp(cityName: string): Subject<number>  {
   let max: number;
   this.http.get(
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    .pipe
+    (
+      retry(1),
+      catchError(this.handleError)
+    )
     .subscribe((weather: any) => {
       max = weather.list[0].main.temp;
       weather.list.forEach((value: any) => {
@@ -92,6 +121,11 @@ getMinTemp(cityName: string): Subject<number>  {
   let min: number;
   this.http.get(
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    .pipe
+    (
+      retry(1),
+      catchError(this.handleError)
+    )
     .subscribe((weather: any) => {
       min = weather.list[0].main.temp;
       weather.list.forEach((value: any) => {
@@ -109,40 +143,35 @@ getForecast(cityName: string): Subject<Array<any>>  {
   const dataSubject = new Subject<Array<any>>();
   this.http.get(
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    .pipe
+    (
+      retry(1),
+      catchError(this.handleError)
+    )
     .subscribe((weather: any) => {
       dataSubject.next(weather.list);
-
     });
   return dataSubject;
 }
 
-// // Add the weather chosen by me into the virtual database (weather.json)
-// addWeather(capital:string, weatherState:string, weatherImg:string, weatherTemp:number, weatherHum:number, weatherwWind:number, maxTemp:number, minTemp:number, forecasts:Array<any>): Observable<weather>{
-//   const weatherUrl = 'http://localhost:3000/weather';
-//   const weather = {
-//      capital: capital,
-//      currentWeatherState: weatherState,
-//      stateImg: weatherImg,
-//      currentTemp: weatherTemp,
-//      currentHum: weatherHum,
-//      currentWind: weatherwWind,
-//      maxTemp: maxTemp,
-//      minTemp: minTemp,
-//      foreCast: forecasts,
-//   }
-//   return this.http.post<weather>(weatherUrl, weather, this.httpOptions).pipe(catchError(err => {console.log(err); return throwError(err)}));
-// }
-
-// // Retrieve all the weathers chosen by me from the virtual database (weather.json)
-// getWeathers(): Observable<weather[]>{
-//   const weatherUrl = 'http://localhost:3000/weather';
-//   return this.http.get<weather[]>(weatherUrl).pipe(catchError(err => {console.log(err); return throwError(err)}));
-// }
+// Return the error message as an Observable to the user if the application fails to fetch data from OpenWeatherMap API (after retrying 1 more time)
+// This handleError() is to ensure the application continues to work even it fails to fetch the data
+private handleError(error: HttpErrorResponse){
+  let errorMsg = '';
+  if(error.status === 0){
+    // Catch the client-side error (E.g., network issues)
+    errorMsg = error.error.message;
+    this.msg.showFailure(errorMsg);
+  }
+  else{
+    // Catch the server-side error (E.g., In my case, the call to API exceeds the maximum limit of free plan of OpenWeatherMap API)
+    errorMsg = error.message;
+    this.msg.showFailure(`Error code: ${error.status}\nMessage: ${error.message}`);
+  }
+  return throwError(() => new Error(`An error has occured: ${errorMsg}`));
 }
 
-
-
-
+}
 
 
 // // Filter search of countries

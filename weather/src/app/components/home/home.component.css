@@ -1,3 +1,8 @@
+.main-container{
+    min-height: 90vh;
+    width: 90vw;
+}
+
 .weather {
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -12,4 +17,20 @@
 
 .country-name {
     text-transform: uppercase;
+}
+
+.weather-wrapper{
+    text-decoration: none;
+    color: inherit;
+    flex-basis: 33.333333%;
+}
+
+.weather-card{
+    min-height: 350px;
+}
+
+
+.weather-card-container{
+    display: flex;
+    flex-wrap: wrap;
 }
