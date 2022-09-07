@@ -1,9 +1,9 @@
 <div class="container-fluid g-0 fixing">
     <app-header (isMenuOpened)="toggleMenu()"></app-header>
     <div class="row g-0">
-        <aside *ngIf="firebase.currentUser as user" class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
-            <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu}" (click)="$event.stopImmediatePropagation();">
-                <section class="menu-header" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode}">
+        <aside *ngIf="firebase.isLoggedIn" class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
+            <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu, 'slide-menu-grid-gap': !isDarkMode}" (click)="$event.stopImmediatePropagation();">
+                <section *ngIf="firebase.currentUser as user" class="menu-header" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode, 'menu-header-separator': isDarkMode}">
                     <span class="greeting__text"><i style="cursor:pointer" class="bi bi-x-lg me-5" [class.font-contrast-color]="isDarkMode" (click)="showMenu = false"></i>&nbsp;Welcome Back</span>
                     <div class="profile-image__container">
                         <img height="50px" width="50px" src="{{(user.imageUrl)? user.imageUrl: '../../assets/images/user-default-profile.png'}}" alt="profile-image" class="profile__image">
@@ -13,22 +13,22 @@
                         <span class="email__text">{{user.email}}</span>
                     </div>
                 </section>
-                <section class="menu-body" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode}">
+                <section class="menu-body" [ngClass]="{'bg-color-dark':isDarkMode}">
                     <ul class="nav flex-column">
                         <li class="nav-item ms-5 me-5 mb-2">
-                          <a routerLink="/home" routerLinkActive="link-active" class="nav-link " aria-current="page"><i class="bi bi-house me-2" [ngClass]="{'font-contrast-color': isDarkMode}"></i>&nbsp;Home</a>
+                          <a [ngClass]="{'font-contrast-color': isDarkMode}" routerLink="/home" routerLinkActive="link-active" class="nav-link " aria-current="page"><i class="bi bi-house me-2"></i>&nbsp;Home</a>
                         </li>
                         <li class="nav-item ms-5 me-5 mb-2">
-                          <a routerLink="/add-weather" routerLinkActive="link-active" class="nav-link"><i class="bi bi-plus-circle me-2"></i>&nbsp;Add City</a>
+                          <a [ngClass]="{'font-contrast-color': isDarkMode}" routerLink="/add-weather" routerLinkActive="link-active" class="nav-link"><i class="bi bi-plus-circle me-2"></i>&nbsp;Add City</a>
                         </li>
                         <li class="nav-item ms-5 me-5 mb-2">
-                          <a (click)="firebase.signOut()" routerLink="/login" routerLinkActive="link-active" class="nav-link"><i class="bi bi-box-arrow-right me-2"></i>&nbsp;Log Out</a>
+                          <a [ngClass]="{'font-contrast-color': isDarkMode}" (click)="firebase.signOut()" routerLink="/login" routerLinkActive="link-active" class="nav-link"><i class="bi bi-box-arrow-right me-2"></i>&nbsp;Log Out</a>
                         </li>
                       </ul>
                 </section>
             </nav>
         </aside>
-        <div class="col" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color':isDarkMode, 'bg-color-light':!isDarkMode}">
+        <div class="col application-background" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color':isDarkMode, 'bg-color-light':!isDarkMode}">
             <!-- Main contents here -->
             <main>
                 <router-outlet></router-outlet>

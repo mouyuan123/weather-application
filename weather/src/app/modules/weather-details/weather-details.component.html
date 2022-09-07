@@ -46,6 +46,11 @@
     <div class="row row-cols-1 m-5">
       <div class="col">
         <div class="header-content__wrapper">
+          <div *ngIf="isMobile" class="city-name__container">
+            <div class="city-name__underline" [ngClass]="{'dark_city-name__underline': isDarkMode}">
+              <span class="city-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{clickedCapital}}</span>
+            </div>
+          </div>
           <div class="today-weather__container">
             <!--{{today}}-->
             <div class="temp-state__container">
@@ -64,7 +69,7 @@
               </div>
             </div>
           </div>
-          <div class="city-name__container">
+          <div *ngIf="!isMobile" class="city-name__container">
             <div class="city-name__underline" [ngClass]="{'dark_city-name__underline': isDarkMode}">
               <span class="city-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{clickedCapital}}</span>
             </div>

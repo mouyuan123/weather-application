@@ -1,77 +1,72 @@
 <div class="loader-container" *ngIf="isLoading"><div class="loader"></div></div>
-<div class="container m-5 main-container">
-        <div class="card shadow-sm add-weather-card">
-            <div class="card-body pt-0 pb-0 pe-0 overflow-hidden position-relative">
-                <div class="row">
-                    <!-- Search Bar site -->
-                    <div class="col-6 d-flex flex-column align-items-start mb-3 ">
-                        <label for="search-country" class="form-label"><h2 class="text">Search Cities</h2></label>
-                        <form #weatherForm="ngForm" (ngSubmit)="searchWeatherByCityName(weatherForm)" class="w-75">
-                            <input name="search-country" list='capitalList' class="form-control" placeholder="Search country here..." [(ngModel)]="searchValue" (ngModelChange)="searchValue = $event.toUpperCase();" required>
-                            <button type="submit" [disabled]="!weatherForm.valid">Search</button>
-                            <datalist id="capitalList">
-                                <option *ngFor="let capital of capitals" [value]=capital>
-                            </datalist>
-                        </form>
-                    </div>
-                    <!-- Weather site -->
-                    <div class="col-6 g-0">
-                        <h2 *ngIf="isFirstTime" class="search-result-text p-2">Please select a capital and click the "Search" icon / press "Enter" key</h2>
-                        <h2 *ngIf="!isCapitalValid" class="search-result-text text-danger p-2">The input is invalid. Note: only capital cities are supported for now</h2>
-                        <ng-container *ngIf="!isFirstTime && isCapitalValid">
-                            <div class="card shadow rounded">
-                                <div class="weather-details card text-center" [class.dark-mode-card-color]="isDarkMode">
-                                    <div class="card-body ">
-                                        <div class="d-flex flex-column">
-                                            <h4 class="country-name">{{capital}}</h4>
-                                            <div class="p-2" [ngSwitch]="true">
-                                                <img *ngSwitchCase="currentWeatherState === 'Clouds'" src="../../../assets/images/cloudy-weather.png" alt="Cloudy day " />
-                                                <img *ngSwitchCase="currentWeatherState === 'Rain' || currentWeatherState === 'Drizzle' || currentWeatherState === 'Mist'" src="../../../assets/images/heavy-rain-weather.png" alt="Raining day" />
-                                                <img *ngSwitchCase="currentWeatherState === 'Storm' || currentWeatherState === 'Thunderstorm'" src="../../../assets/images/storm-weather.png" alt="Thunderstorm day " />
-                                                <img *ngSwitchCase="currentWeatherState === 'Sunny' || currentWeatherState === 'Clear'" src="../../../assets/images/sunny-weather.png" alt="Sunny day " />
-                                                <img *ngSwitchDefault src="../../../assets/images/snowing-weather.png" alt="Snowing day " />
+<div class="d-flex flex-column">
+    <div class="main_container m-5 mb-0">
+        <!-- Search Bar site -->
+        <div class="search-weather">
+            <label for="search-country" class="form-label"><h2 class="text">Search Cities</h2></label>
+            <form #weatherForm="ngForm" (ngSubmit)="searchWeatherByCityName(weatherForm)" class="w-75">
+                <input name="search-country" list='capitalList' class="form-control" placeholder="Search country here..." [(ngModel)]="searchValue" (ngModelChange)="searchValue = $event.toUpperCase();" required>
+                <button type="submit" [disabled]="!weatherForm.valid">Search</button>
+                <datalist id="capitalList">
+                    <option *ngFor="let capital of capitals" [value]=capital>
+                </datalist>
+            </form>
+        </div>
+        <div class="weather-info">
+            <h2 *ngIf="isFirstTime" class="search-result-text p-2">Please select a capital and click the "Search" icon / press "Enter" key</h2>
+            <h2 *ngIf="!isCapitalValid" class="search-result-text text-danger p-2">The input is invalid. Note: only capital cities are supported for now</h2>
+            <ng-container *ngIf="!isFirstTime && isCapitalValid">
+                <div class="card shadow rounded">
+                    <div class="weather-details card text-center" [class.dark-mode-card-color]="isDarkMode">
+                        <div class="card-body">
+                            <div class="d-flex flex-column">
+                                <h4 class="country-name fs-2">{{capital}}</h4>
+                                <div class="p-2" [ngSwitch]="true">
+                                    <img *ngSwitchCase="currentWeatherState === 'Clouds'" src="../../../assets/images/cloudy-weather.png" alt="Cloudy day " />
+                                    <img *ngSwitchCase="currentWeatherState === 'Rain' || currentWeatherState === 'Drizzle' || currentWeatherState === 'Mist'" src="../../../assets/images/heavy-rain-weather.png" alt="Raining day" />
+                                    <img *ngSwitchCase="currentWeatherState === 'Storm' || currentWeatherState === 'Thunderstorm'" src="../../../assets/images/storm-weather.png" alt="Thunderstorm day " />
+                                    <img *ngSwitchCase="currentWeatherState === 'Sunny' || currentWeatherState === 'Clear'" src="../../../assets/images/sunny-weather.png" alt="Sunny day " />
+                                    <img *ngSwitchDefault src="../../../assets/images/snowing-weather.png" alt="Snowing day " />
+                                </div>
+                                <div>
+                                    <h3 class="degree fs-3"><strong>{{currentTemp}}&#176;</strong></h3>
+                                    <p class="weather mb-0 fs-3">{{currentWeatherState}}</p>
+                                    <div class='d-flex justify-content-evenly'>
+                                        <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
+                                            <div><i class="bi bi-caret-down-fill min-degree "></i></div>
+                                            <div>
+                                                <span class="degree fs-3">{{minTemp}}</span>
                                             </div>
                                             <div>
-                                                <h3 class="degree "><strong>{{currentTemp}}&#176;</strong></h3>
-                                                <p class="fs-5 weather mb-0">{{currentWeatherState}}</p>
-                                                <div class='d-flex justify-content-evenly'>
-                                                    <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
-                                                        <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                                        <div>
-                                                            <span class="degree ">{{minTemp}}</span>
-                                                        </div>
-                                                        <div>
-                                                            <span class="min-degree degree ">Min</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
-                                                        <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                                                        <div>
-                                                            <span class="degree ">{{maxTemp}}</span>
-                                                        </div>
-                                                        <div>
-                                                            <span class="max-degree degree ">Max</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <span class="min-degree degree fs-3">Min</span>
                                             </div>
                                         </div>
-                                        <div class="d-grid">
-                                            <button class="m-2 btn btn-info" type="button" (click)="addUserCapitalWeather(capital)" [disabled]="isAdded"><strong>{{btnText}}</strong></button>
-                                            <!-- Disable the "Add" Button once the "Add" Button is clicked -->
-                                            <!-- <button *ngIf="!isAdded" class="btn btn-info" type="button"><strong>Add</strong></button> -->
+                                        <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
+                                            <div><i class="bi bi-caret-up-fill max-degree "></i></div>
+                                            <div>
+                                                <span class="degree fs-3">{{maxTemp}}</span>
+                                            </div>
+                                            <div>
+                                                <span class="max-degree degree fs-3">Max</span>
+                                            </div>
                                         </div>
                                     </div>
-                                  
                                 </div>
                             </div>
-                        </ng-container>
+                            <div class="d-grid">
+                                <button class="mt-2 btn btn-info" type="button" (click)="addUserCapitalWeather(capital)" [disabled]="isAdded"><strong>{{btnText}}</strong></button>
+                                <!-- Disable the "Add" Button once the "Add" Button is clicked -->
+                                <!-- <button *ngIf="!isAdded" class="btn btn-info" type="button"><strong>Add</strong></button> -->
+                            </div>
+                        </div>
+                    
+                    </div>
                 </div>
-            </div>
+            </ng-container>
         </div>
     </div>
-    <button type="button" class="btn btn-info col-2 mt-2" (click)="goBack();"><strong>&lt; Back</strong></button>
-    </div>
+    <button type="button" class="back-button btn btn-info col-2 mt-2 ms-5" (click)="goBack();"><strong>&lt; Back</strong></button>
+</div>
 
 <!-- Pass the countries$ as a normal array
   <div *ngIf='countries$ | async; let countries'>

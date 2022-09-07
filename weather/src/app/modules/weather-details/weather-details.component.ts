@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { WeatherService } from 'src/app/services/weather.service';
 // To check which capital's weather details are viewed
@@ -28,10 +28,18 @@ export class WeatherDetailsComponent implements OnInit {
   forecast: Record<string,any> = {};
   // Determine the current day
   today!: string;
-  //
+  // Check whether the APi fetch the weather completely
   isLoading = true;
+  // Check whether it is mobile version
+  isMobile!: boolean;
 
   constructor(private pms: PageModeService, private ws: WeatherService, private ar: ActivatedRoute) { }
+
+  @HostListener('window: resize', ['$event'])
+  onResize(event: any){
+    this.isMobile = window.innerWidth < 768;
+  }
+
 
   ngOnInit(): void {
     this.getPageMode();

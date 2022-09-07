@@ -24,7 +24,9 @@ export class FirebaseService {
   // To check whether the current user is logged in
   get isLoggedIn(): boolean{
     const value = JSON.parse(localStorage.getItem('user')!);
-    return value !== null;
+    // The user is able to open the side menu only when he / she is logged in
+    const login = JSON.parse(localStorage.getItem('login')!);
+    return value !== null && login && value.emailVerified;
   }
 
   constructor(private auth: AngularFireAuth, private firestore: AngularFirestore, private router: Router, private msg: ErrorSuccessMessageService) {
@@ -45,6 +47,8 @@ export class FirebaseService {
           // If the user signed out / does not exist, set it as "null"
           this.currentUser = null;
           localStorage.setItem('user','null');
+          // Avoid the user opening the side menu when he / she logged out
+          localStorage.setItem('login','false');
         }
       }
     )
@@ -53,10 +57,16 @@ export class FirebaseService {
   // Sign up a new user to Firebase
   async signUpNewUser(email: string, password: string){
     try {
-      const newUser = await this.auth.createUserWithEmailAndPassword(email, password);
+      await this.auth.createUserWithEmailAndPassword(email, password)
+      .then(user => 
+        {
+          this.verifyEmail();
+          this.setNewUserData(user.user);
+        });
+      // Avoid the user opening the side menu when he / she signs up only
+      localStorage.setItem('login',JSON.stringify(false));
       this.msg.showSuccess("You have registered successfully!"); 
       // Store the newly signed-up user needed information to the Firestore database
-      this.setNewUserData(newUser.user); 
       this.router.navigateByUrl('/login');
     } catch (error: any) {
       if (error.code == 'auth/email-already-in-use') { this.msg.showFailure('Email already exists, please try again!'); }
@@ -64,16 +74,50 @@ export class FirebaseService {
     };
   }
 
+   async verifyEmail(): Promise<any>{
+    try{
+      await this.auth.currentUser.then((user: any) => {user.sendEmailVerification();})
+      this.msg.showSuccess("A verification email is sent to your email. Please check");
+    }catch(error: any){
+      this.msg.showFailure(error.message);
+    }
+  }
+
   // Sign in existing user
   async signInUser(email: string, password: string): Promise<any>{
     try {
-      await this.auth.signInWithEmailAndPassword(email, password);
-      this.msg.showSuccess('You have signed in successfully'); this.router.navigateByUrl('/home');
+      await this.auth.signInWithEmailAndPassword(email, password)
+      .then((user: any) => 
+      {
+        if(user.user.emailVerified){
+          const userUpdate = JSON.parse(localStorage.getItem('user')!);
+          userUpdate['emailVerified'] = true;
+          this.currentUser = userUpdate;
+          localStorage.setItem('user', JSON.stringify(this.currentUser));
+          localStorage.setItem('login',JSON.stringify(true));
+          this.msg.showSuccess('You have signed in successfully'); 
+          this.router.navigateByUrl("/home");
+        }
+        else{
+          this.msg.showFailure('Please verify your email before logging in');
+        }
+      });
+      // Allows the user open / close the side menu when he / she logged in
     } catch (error: any) {
       if (error.code == 'auth/wrong-password') { this.msg.showFailure('Invalid password. Please try again.'); }
       else if (error.code == 'auth/user-not-found') { this.msg.showFailure('User not found. Please try another email'); }
       else { this.msg.showFailure("There was a problem while trying to signing in a user: " + error.details); }
     };
+  }
+
+  // Allows the user to reset his / her password
+  async resetPassword(email: string): Promise<any>{
+    try {
+      await this.auth.sendPasswordResetEmail(email);
+      this.msg.showSuccess("A password reset email is sent to you. Please check your inbox");
+    } catch (error: any){
+      this.msg.showFailure(error.message);
+    }
   }
 
   // Sign out the current user and remove him/her from local storage when the "Sign Out" icon is clicked

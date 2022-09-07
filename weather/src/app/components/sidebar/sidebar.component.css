@@ -56,10 +56,13 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 2fr 4fr 1fr;
-    grid-gap: 1rem;
     /* Animate the sliding in & out of the sidemenu */
     transition: transform 300ms linear;
     will-change: transform;
+}
+
+.slide-menu-grid-gap{
+    grid-gap: 1rem;
 }
 
 
@@ -80,6 +83,10 @@
     width: 100%;
     align-content: center;
     box-shadow: 0 0.5rem 2rem rgba(0, 0, 255, 0.2);
+}
+
+.menu-header-separator{
+    border-bottom: 1px solid white;
 }
 
 .greeting__text {
@@ -114,6 +121,7 @@
 .menu-body {
     display: grid;
     width: 100%;
+    min-height: 90vh;
 }
 
 .link-active{
@@ -283,6 +291,10 @@
     opacity: 1;
     background: linear-gradient(to bottom, #B290FF, #2E1D65);
     transition: opacity 300ms linear;
+}
+
+.application-background{
+    min-height: 90vh;
 }
 
 

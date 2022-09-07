@@ -1,13 +1,12 @@
-<div class="row">
-    <header class="header bg-color pt-4 pb-2 shadow" [class.bg-color-dark]="isDarkMode">
-        <div class="d-flex justify-content-between">
-            <i class="bi bi-list sidemenu-controller ms-2" (click)="toggleMenu();" [class.font-contrast-color]="isDarkMode"></i>
-            <h2 [class.font-contrast-color]="isDarkMode">TODAY</h2>
-            <!-- Rounded Toggle Switch (Light & Dark Mode)-->
-            <label class="switch" data-bs-toggle="tooltip" data-bs-placement="left" title="Change page mode">
-                <input (click)="togglePageMode()" type="checkbox">
-                <span class="slider round"></span>
-            </label>
-        </div>
-    </header>
-</div>
+<header class="header bg-color pt-4 pb-2 shadow" [class.bg-color-dark]="isDarkMode">
+    <div class="d-flex justify-content-between">
+        <i class="bi bi-list sidemenu-controller ms-2" (click)="toggleMenu();" [class.font-contrast-color]="isDarkMode"></i>
+        <h2 [class.font-contrast-color]="isDarkMode">TODAY</h2>
+        <!-- Rounded Toggle Switch (Light & Dark Mode)-->
+        <label class="switch" data-bs-toggle="tooltip" data-bs-placement="left" title="Change page mode">
+            <!-- Bind the "checked" attribute to "isDarkMode" to make sure it is toggled for both light & dark mode -->
+            <input (click)="togglePageMode()" type="checkbox" [checked]="isDarkMode">
+            <span class="slider round"></span>
+        </label>
+    </div>
+</header>

@@ -15,6 +15,12 @@ export class HeaderComponent implements OnInit {
   constructor(private pm: PageModeService) { }
 
   ngOnInit(): void {
+    const mode = JSON.parse(localStorage.getItem('dark')!);
+    // If the page mode appears in local storage, it implicits that the user toggle the page mode button before
+    if(mode){
+      this.isDarkMode = mode;
+      this.pm.setPageModeAfterReload(mode);
+    }
   }
 
   toggleMenu(): void{
@@ -25,6 +31,10 @@ export class HeaderComponent implements OnInit {
   // whenever the toggle button is clicked
   togglePageMode(): void{
     this.pm.setPageMode();
-    this.pm.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
+    this.pm.getPageMode().subscribe(pageMode => 
+      {
+        this.isDarkMode = pageMode;
+        localStorage.setItem('dark',JSON.stringify(this.isDarkMode));
+      })
   }
 }

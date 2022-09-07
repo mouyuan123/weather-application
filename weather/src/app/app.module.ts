@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import {FormsModule} from '@angular/forms';
 // import { ServiceWorkerModule } from '@angular/service-worker';
 
 
@@ -29,6 +30,7 @@ import { FirebaseService } from './services/firebase.service';
 
 // Environment
 import { environment } from 'src/environments/environment';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 
 @NgModule({
@@ -39,6 +41,7 @@ import { environment } from 'src/environments/environment';
     HomeComponent,
     LoginComponent,
     SignUpComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +53,7 @@ import { environment } from 'src/environments/environment';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    FormsModule
     // ServiceWorkerModule.register('ngsw-worker.js', {
     //   enabled: environment.production,
     //   // Register the ServiceWorker as soon as the application is stable

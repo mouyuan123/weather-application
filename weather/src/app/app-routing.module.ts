@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 // Authentication guard to protect the inner page of the website from unauthorized access
 import { AuthGuard } from './guards/auth.guard';
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   { path: 'add-weather', loadChildren: () => import('./modules/add-weather/add-weather.module').then(m => m.AddWeatherModule), canActivate: [AuthGuard] },
-  { path: 'weather-details', loadChildren: () => import('./modules/weather-details/weather-details.module').then(m => m.WeatherDetailsModule), canActivate: [AuthGuard] }
+  { path: 'weather-details', loadChildren: () => import('./modules/weather-details/weather-details.module').then(m => m.WeatherDetailsModule), canActivate: [AuthGuard] },
+  { path: 'password-reset', component: PasswordResetComponent}
 ]
 
 @NgModule({

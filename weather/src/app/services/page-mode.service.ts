@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,11 +19,22 @@ export class PageModeService {
   isDarkMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.curMode);
 
   constructor() { 
+    
+  }
+
+  get mode(){
+    return this.curMode;
   }
 
   // Toggle the page mode when the "Toggle" button is clicked
   setPageMode(): void{
     this.curMode = !this.curMode;
+    this.isDarkMode.next(this.curMode);
+  }
+
+  // Retain the previous page mode after the user refreshs the browser (local storage in header)
+  setPageModeAfterReload(mode: boolean){
+    this.curMode = mode;
     this.isDarkMode.next(this.curMode);
   }
 

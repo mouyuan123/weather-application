@@ -1,13 +1,12 @@
 .details-page__wrapper {
   background: linear-gradient(to top, #a7e2fc 0%, #fbfbfc 100%);
-  min-height: 100vh;
   width: 70vw;
   position: relative;
   z-index: 2;
 }
 
 .details-page__wrapper-dark {
-  background: linear-gradient(#292bb1, #495CFC);
+  background: linear-gradient(#121349, #1020b4);
 }
 
 .background-gradient__circle {
@@ -73,7 +72,7 @@
   top: 2rem;
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 2fr 1.5fr;
   width: 100%;
 
 }
