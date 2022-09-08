@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css', '../../../styles.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   isDarkMode!: boolean;
   loginForm!: FormGroup;
+  //
+  private readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(private pms: PageModeService, private fb: FormBuilder, private firebase: FirebaseService, private router: Router) { }
 
@@ -25,7 +28,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pms.getPageMode().subscribe(mode => this.isDarkMode = mode);
+    this.pms.getPageMode()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(mode => this.isDarkMode = mode);
     this.loginForm = this.fb.group
     (
       {
@@ -38,5 +43,10 @@ export class LoginComponent implements OnInit {
   // Login the user to the home page if both the email and password is correct
   onSubmit(): void{
     this.firebase.signInUser(this.userEmail.value, this.password.value);
+  }
+
+  ngOnDestroy(): void{
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { PageModeService } from 'src/app/services/page-mode.service';
 
 @Component({
@@ -6,11 +7,13 @@ import { PageModeService } from 'src/app/services/page-mode.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css', '../../../styles.css'] // Allow styles.css to override the background color of header component
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   // Allows me to open and close the side menu
   @Output() isMenuOpened = new EventEmitter();
   // Check whether to change to dark mode
   isDarkMode!: boolean;
+  //
+  private readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(private pm: PageModeService) { }
 
@@ -31,10 +34,17 @@ export class HeaderComponent implements OnInit {
   // whenever the toggle button is clicked
   togglePageMode(): void{
     this.pm.setPageMode();
-    this.pm.getPageMode().subscribe(pageMode => 
+    this.pm.getPageMode()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(pageMode => 
       {
         this.isDarkMode = pageMode;
         localStorage.setItem('dark',JSON.stringify(this.isDarkMode));
       })
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

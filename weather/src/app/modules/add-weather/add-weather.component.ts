@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WeatherService } from 'src/app/services/weather.service';
 import { NgForm } from '@angular/forms';
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -12,7 +13,7 @@ selector: 'app-add-weather',
 templateUrl: './add-weather.component.html',
 styleUrls: ['./add-weather.component.css','../../../styles.css']
 })
-export class AddWeatherComponent implements OnInit {
+export class AddWeatherComponent implements OnInit, OnDestroy {
 // Check the page mode
 isDarkMode!: boolean;
 // addedCapitals: string[] = [];
@@ -41,15 +42,16 @@ isAdded!: boolean;
 btnText!: string;
 //
 isLoading = true;
+private readonly unsubscribe$: Subject<void> = new Subject();
 
 
 constructor(private http: HttpClient, private ws: WeatherService, private location: Location, private pm: PageModeService, private firebase: FirebaseService) { }
 
 ngOnInit(): void {
   // Set the page mode based on the button toggling
-  this.pm.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
+  this.pm.getPageMode().pipe(takeUntil(this.unsubscribe$)).subscribe(pageMode => this.isDarkMode = pageMode);
   // Get the list of "Capital" of all the countries from API (https://restcountries.com/v3.1/all)
-  this.http.get('https://restcountries.com/v3.1/all')
+  this.http.get('https://restcountries.com/v3.1/all').pipe(takeUntil(this.unsubscribe$))
   .subscribe((countries: any) => {countries.forEach((country: any) => {if(country.capital){ let capital = country.capital[0].toUpperCase(); this.capitals.push(capital);}});
                                   this.capitals.sort();
                                 this.isLoading = false;});
@@ -62,7 +64,7 @@ searchWeatherByCityName(weatherForm: NgForm): void{
 this.checkCapital(this.searchValue);
 if(this.isCapitalValid){
   this.capital = this.searchValue;
-  this.ws.getWeatherState(this.capital).subscribe(state => {this.currentWeatherState = state; 
+  this.ws.getWeatherState(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(state => {this.currentWeatherState = state; 
                                                             switch(this.currentWeatherState){
                                                               case "Clouds": this.stateImg = '../../assets/images/cloudy-weather.png'; break;
                                                               case 'Rain' ||'Drizzle': this.stateImg = '../../assets/images/heavy-rain-weather.png'; break;
@@ -70,11 +72,11 @@ if(this.isCapitalValid){
                                                               case 'Sunny' || 'Clear': this.stateImg ='../../assets/images/sunny-weather.png'; break;
                                                               default: this.stateImg = '../../assets/images/snowing-weather.png';
                                                             }});
-  this.ws.getCurrentTemp(this.capital).subscribe(temp => this.currentTemp = temp);
-  this.ws.getCurrentHum(this.capital).subscribe(humidity => this.currentHum = humidity);
-  this.ws.getCurrentWind(this.capital).subscribe(windSpeed => this.currentWind = windSpeed);
-  this.ws.getMaxTemp(this.capital).subscribe(maxTemp => this.maxTemp = maxTemp);
-  this.ws.getMinTemp(this.capital).subscribe(minTemp => this.minTemp = minTemp);
+  this.ws.getCurrentTemp(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(temp => this.currentTemp = temp);
+  this.ws.getCurrentHum(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(humidity => this.currentHum = humidity);
+  this.ws.getCurrentWind(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(windSpeed => this.currentWind = windSpeed);
+  this.ws.getMaxTemp(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(maxTemp => this.maxTemp = maxTemp);
+  this.ws.getMinTemp(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(minTemp => this.minTemp = minTemp);
   this.toggleAddWeatherBtn();
 }
 this.resetForm();
@@ -106,7 +108,7 @@ goBack(): void{
  * Retreive the capital list that is added by the user (to display real time weather [3 hours interval] of each capital)
  */
   getUserCapitalList(): void{
-  this.firebase.getUserCapitalList().subscribe((user: any) => this.capitalList = user.capitalList);
+  this.firebase.getUserCapitalList().pipe(takeUntil(this.unsubscribe$)).subscribe((user: any) => this.capitalList = user.capitalList);
 }
 
 // Toggle between 'Add' and 'Added' button
@@ -127,6 +129,11 @@ addUserCapitalWeather(capital: string): void{
   .then(value =>{this.isAdded = value; 
     this.toggleAddWeatherBtn();
   this.isLoading = false;});
+}
+
+ngOnDestroy(): void {
+  this.unsubscribe$.next();
+  this.unsubscribe$.complete();
 }
 }
 /** 

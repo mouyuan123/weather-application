@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css','../../../styles.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   // To check whether to show the sidebar menu
   showMenu: boolean = false;
   // To check whether to display the contents in light mode / dark mode
   isDarkMode!: boolean;
+  private readonly unsubscribe$: Subject<void> = new Subject();
 
 
   constructor(private pm: PageModeService, public firebase: FirebaseService) { }
@@ -31,6 +33,13 @@ export class SidebarComponent implements OnInit {
    *             while retaining the original data source
    */
   getPageMode(): void{
-    this.pm.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
+    this.pm.getPageMode()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(pageMode => this.isDarkMode = pageMode);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

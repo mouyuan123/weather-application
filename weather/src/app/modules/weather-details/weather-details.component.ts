@@ -1,16 +1,18 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { WeatherService } from 'src/app/services/weather.service';
 // To check which capital's weather details are viewed
 import { ActivatedRoute } from '@angular/router';
 import { forecast } from 'src/app/forecast';
+import { Subject, takeUntil } from 'rxjs';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-weather-details',
   templateUrl: './weather-details.component.html',
   styleUrls: ['./weather-details.component.css', '../../../styles.css']
 })
-export class WeatherDetailsComponent implements OnInit {
+export class WeatherDetailsComponent implements OnInit, OnDestroy {
 
   isDarkMode!: boolean;
   // Specify which capital is clicked
@@ -32,6 +34,7 @@ export class WeatherDetailsComponent implements OnInit {
   isLoading = true;
   // Check whether it is mobile version
   isMobile!: boolean;
+  private readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(private pms: PageModeService, private ws: WeatherService, private ar: ActivatedRoute) { }
 
@@ -47,7 +50,7 @@ export class WeatherDetailsComponent implements OnInit {
   }
 
   getPageMode(): void{
-    this.pms.getPageMode().subscribe(pageMode => this.isDarkMode = pageMode);
+    this.pms.getPageMode().pipe(takeUntil(this.unsubscribe$)).subscribe(pageMode => this.isDarkMode = pageMode);
   }
 
   getClickedCapitalDetails(): void{
@@ -55,7 +58,7 @@ export class WeatherDetailsComponent implements OnInit {
     // Retrieve the current capital clicked from the query params of the URL
     this.clickedCapital = this.ar.snapshot.queryParams['country'];
     if(this.clickedCapital){
-      this.ws.getWeatherState(this.clickedCapital).subscribe(state => {this.currentWeatherState = state; 
+      this.ws.getWeatherState(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(state => {this.currentWeatherState = state; 
         switch(this.currentWeatherState){
           case "Clouds": this.stateImg = '../../assets/images/cloudy-weather.png'; break;
           case 'Rain' ||'Drizzle': this.stateImg = '../../assets/images/heavy-rain-weather.png'; break;
@@ -63,12 +66,12 @@ export class WeatherDetailsComponent implements OnInit {
           case 'Sunny' || 'Clear': this.stateImg ='../../assets/images/sunny-weather.png'; break;
           default: this.stateImg = '../../assets/images/snowing-weather.png';
         }});
-      this.ws.getCurrentTemp(this.clickedCapital).subscribe(temp => this.currentTemp = temp);
-      this.ws.getCurrentHum(this.clickedCapital).subscribe(humidity => this.currentHum = humidity);
-      this.ws.getCurrentWind(this.clickedCapital).subscribe(windSpeed => this.currentWind = windSpeed);
-      this.ws.getMaxTemp(this.clickedCapital).subscribe(maxTemp => this.maxTemp = maxTemp);
-      this.ws.getMinTemp(this.clickedCapital).subscribe(minTemp => this.minTemp = minTemp);
-      this.ws.getForecast(this.clickedCapital).subscribe(forecastOfFiveDays =>
+      this.ws.getCurrentTemp(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(temp => this.currentTemp = temp);
+      this.ws.getCurrentHum(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(humidity => this.currentHum = humidity);
+      this.ws.getCurrentWind(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(windSpeed => this.currentWind = windSpeed);
+      this.ws.getMaxTemp(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(maxTemp => this.maxTemp = maxTemp);
+      this.ws.getMinTemp(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(minTemp => this.minTemp = minTemp);
+      this.ws.getForecast(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(forecastOfFiveDays =>
         {
           // Retrieve the current day of the week (E.g., days[2] = Tue)
           const todayNumberInWeek = new Date().getDay();
@@ -161,5 +164,10 @@ export class WeatherDetailsComponent implements OnInit {
   // By default, "keyvalue" pipe will sort the map/array/record based on the key. Returning 0 will avoid it to do the default sorting.
   returnZero(){
     return 0;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

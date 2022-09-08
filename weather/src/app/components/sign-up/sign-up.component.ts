@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Router } from '@angular/router';
 import { PageModeService } from 'src/app/services/page-mode.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css', '../../../styles.css'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   isDarkMode!: boolean;
   signUpForm!: FormGroup;
+  private readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(private fb: FormBuilder, private firebase: FirebaseService, private router: Router, private pms: PageModeService) { }
 
@@ -25,7 +27,9 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pms.getPageMode().subscribe(mode => this.isDarkMode = mode);
+    this.pms.getPageMode()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(mode => this.isDarkMode = mode);
     // Create a form using reactive form modules
     this.signUpForm = this.fb.group
     (
@@ -40,5 +44,10 @@ export class SignUpComponent implements OnInit {
   onSubmit(): void{
     this.firebase.signUpNewUser(this.userEmail.value, this.password.value);
     this.signUpForm.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

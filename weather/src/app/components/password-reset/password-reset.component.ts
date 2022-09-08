@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { NgForm } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -9,9 +10,10 @@ import { NgForm } from '@angular/forms';
   templateUrl: './password-reset.component.html',
   styleUrls: ['./password-reset.component.css','../../../styles.css']
 })
-export class PasswordResetComponent implements OnInit {
+export class PasswordResetComponent implements OnInit, OnDestroy {
   isDarkMode!: boolean;
   email = "";
+  private readonly unsubscribe$: Subject<void> = new Subject();
 
 
   constructor(private pms: PageModeService, private firebase: FirebaseService) { }
@@ -21,13 +23,20 @@ export class PasswordResetComponent implements OnInit {
   }
 
   getPageMode(){
-    this.pms.getPageMode().subscribe(mode => this.isDarkMode = mode);
+    this.pms.getPageMode()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(mode => this.isDarkMode = mode);
   }
 
   onSubmit(resetForm: NgForm){
     const email = resetForm.value.email;
     this.firebase.resetPassword(email);
     resetForm.reset();
+  }
+
+  ngOnDestroy(): void{
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
