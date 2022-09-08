@@ -5,7 +5,6 @@ import { WeatherService } from 'src/app/services/weather.service';
 import { ActivatedRoute } from '@angular/router';
 import { forecast } from 'src/app/forecast';
 import { Subject, takeUntil } from 'rxjs';
-import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-weather-details',
