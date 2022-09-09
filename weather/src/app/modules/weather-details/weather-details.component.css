@@ -312,6 +312,15 @@
   color: #2B244D;
 }
 
+.delete-btn{
+  width: 0px;
+  color: red;
+  top: 93%;
+  left: 90%;
+  /* Disable some css effect of bootstrap button */
+  --bs-btn-focus-shadow-rgb: none;
+}
+
 /* Media Query:   LT-XL   */
 @media screen and (max-width: 1919px) {
   .main-weather__card {

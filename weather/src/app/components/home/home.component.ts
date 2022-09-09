@@ -3,6 +3,10 @@ import { PageModeService } from 'src/app/services/page-mode.service';
 import { WeatherService } from 'src/app/services/weather.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Router } from '@angular/router';
+/**
+ * Used to unsubscribe the Observable / Subject whenever the component is destroyed to avoid memory leak
+ * Memory Leak in my case: redundant components / elements displayed repeatedly
+ * */
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -24,7 +28,10 @@ export class HomeComponent implements OnInit, OnDestroy{
   minTemp: number[] = [];
   // Display the loading animation when the fetch from API is incomplete
   isLoading = true;
-  //
+  /**
+   *  readonly => Reassignment in the component class itself only
+   *           => Used to define the properties of a component
+   * */ 
   private readonly unsubscribe$: Subject<void> = new Subject();
 
   constructor(private pm: PageModeService, private ws: WeatherService, private firebase: FirebaseService, private router: Router) { }
@@ -52,6 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy{
   getUserCapitalList(): void{
     this.isLoading = true;
     this.firebase.getUserCapitalList()
+    // Make sure the takeUntil() is always the last function in pipe() => *Best practice
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((user: any) => {user.capitalList.forEach((element: any) => {
       this.capitals.push(element);
@@ -69,6 +77,10 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.router.navigate(['/weather-details'], {queryParams:{country: capital}})
   }
 
+  /**
+   * Whenever a component is destroyed, unsubscribe$.next() emit a new value so that the observer unsubscribe
+   * to the observable using takeUntil()
+   */
   ngOnDestroy(){
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

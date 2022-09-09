@@ -3,7 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import { User } from '../user';
-import { Router } from '@angular/router';
+import { Router, TitleStrategy } from '@angular/router';
 // 1. To sign up a new user
 // 2. To sign in an existing user
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -144,6 +144,26 @@ export class FirebaseService {
     }
     // {merge: true} => Update the document for specific user
     return userRef.set(userData, {merge: true})
+  }
+
+  // 0 => username, 1 =>imageUrl
+  async updateUserData(code: number, value: string): Promise<void>{
+    const userid = JSON.parse(localStorage.getItem('user')!)['uid'];
+    const userRef: AngularFirestoreDocument<any> = this.firestore.doc(`users/${userid}`);
+    switch(code){
+      case 0: try {
+        await userRef.update({ username: value });
+        return this.msg.showSuccess("Update the username successfully");
+      } catch (error:any) {
+        return this.msg.showFailure('Something wrong happens: ' + error.message);
+      }
+      default: try {
+        await userRef.update({ imageUrl: value });
+        return this.msg.showSuccess("Update your profile picture successfully");
+      } catch (error_1: any) {
+        return this.msg.showFailure('Something wrong happens: ' + error_1.message);
+      }
+    }
   }
 
   // When the user add the capital, it will be added to the "capitalList []" of the user in Firestore

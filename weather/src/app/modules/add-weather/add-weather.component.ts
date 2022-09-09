@@ -51,7 +51,8 @@ ngOnInit(): void {
   // Set the page mode based on the button toggling
   this.pm.getPageMode().pipe(takeUntil(this.unsubscribe$)).subscribe(pageMode => this.isDarkMode = pageMode);
   // Get the list of "Capital" of all the countries from API (https://restcountries.com/v3.1/all)
-  this.http.get('https://restcountries.com/v3.1/all').pipe(takeUntil(this.unsubscribe$))
+  this.http.get('https://restcountries.com/v3.1/all')
+  .pipe(takeUntil(this.unsubscribe$))
   .subscribe((countries: any) => {countries.forEach((country: any) => {if(country.capital){ let capital = country.capital[0].toUpperCase(); this.capitals.push(capital);}});
                                   this.capitals.sort();
                                 this.isLoading = false;});
@@ -126,9 +127,10 @@ toggleAddWeatherBtn(): void{
 addUserCapitalWeather(capital: string): void{
   this.isLoading = true;
   this.firebase.addUserCapitalWeather(capital)
-  .then(value =>{this.isAdded = value; 
+  .then(value =>{
+    this.isAdded = value; 
     this.toggleAddWeatherBtn();
-  this.isLoading = false;});
+    this.isLoading = false;});
 }
 
 ngOnDestroy(): void {

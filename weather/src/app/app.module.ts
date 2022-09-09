@@ -31,6 +31,8 @@ import { FirebaseService } from './services/firebase.service';
 // Environment
 import { environment } from 'src/environments/environment';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -42,6 +44,8 @@ import { PasswordResetComponent } from './components/password-reset/password-res
     LoginComponent,
     SignUpComponent,
     PasswordResetComponent,
+    ProfileComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,

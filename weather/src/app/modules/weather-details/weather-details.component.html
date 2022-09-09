@@ -42,7 +42,7 @@
       </text>
     </g>
   </svg>
-  <div class="container details-page__wrapper shadow-lg rounded-3" [ngClass]="{'details-page__wrapper-dark': isDarkMode}">
+  <div class="container details-page__wrapper shadow-lg rounded-3 position-relative" [ngClass]="{'details-page__wrapper-dark': isDarkMode}">
     <div class="row row-cols-1 m-5">
       <div class="col">
         <div class="header-content__wrapper">
@@ -86,8 +86,24 @@
           </div> 
         </section>
       </div>
+      <button type="button" class="btn btn-link position-absolute p-0 m-0 fs-5 delete-btn" data-bs-toggle="modal" data-bs-placement="right" data-bs-target="#deleteWeather" title="Delete added weather">Delete</button>
     </div>
   </div>
+  <!-- Modal -->
+<div class="modal fade" id="deleteWeather" tabindex="-1" aria-labelledby="deleteWeatherLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" [ngClass]="{'details-page__wrapper-dark': isDarkMode}">
+      <div class="modal-header">
+        <h5 class="modal-title fs-4" id="deleteWeatherLabel">Are you sure you want to delete?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteWeather()">Yes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- <div class="details-page__wrapper" [ngClass]="{'details-page__wrapper-dark': isDarkMode}">
   <div class="background-gradient__circle" [ngClass]="{'background-gradient__circle-dark': isDarkMode}"></div>  -->
   <!-- <section class="main-weather__card"> -->

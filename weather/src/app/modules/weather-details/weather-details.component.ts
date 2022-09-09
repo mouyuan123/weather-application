@@ -2,9 +2,10 @@ import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { WeatherService } from 'src/app/services/weather.service';
 // To check which capital's weather details are viewed
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forecast } from 'src/app/forecast';
 import { Subject, takeUntil } from 'rxjs';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-weather-details',
@@ -35,7 +36,7 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
   isMobile!: boolean;
   private readonly unsubscribe$: Subject<void> = new Subject();
 
-  constructor(private pms: PageModeService, private ws: WeatherService, private ar: ActivatedRoute) { }
+  constructor(private pms: PageModeService, private ws: WeatherService, private router: Router, private ar: ActivatedRoute, private firebase: FirebaseService) { }
 
   @HostListener('window: resize', ['$event'])
   onResize(event: any){
@@ -163,6 +164,18 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
   // By default, "keyvalue" pipe will sort the map/array/record based on the key. Returning 0 will avoid it to do the default sorting.
   returnZero(){
     return 0;
+  }
+
+  deleteWeather(): void{
+    this.isLoading = true;
+    this.firebase.removeUserCapitalWeather(this.clickedCapital!)
+    // .then() => When the capital removal is done, only navigate back to the home page
+    .then(deleted => 
+      {if(deleted){
+        this.router.navigate(['/home']);
+      }
+      this.isLoading = false;
+      });
   }
 
   ngOnDestroy(): void {
