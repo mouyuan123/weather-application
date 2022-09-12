@@ -1151,7 +1151,7 @@
   
   .shadow,
   .card-profile-image img {
-    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, .15) !important;
+    box-shadow: 0 0 2rem 20px rgb(86 85 86 / 17%) !important
   }
   
   .m-0 {
@@ -1517,13 +1517,20 @@
   }
   
   .card-profile-image img {
-    position: absolute;
+    /* position: absolute;
     left: 47%;
-    top: 40%;
+    top: 40%; */
     max-width: 180px;
     transition: all .15s ease;
     transform: translate(-50%, -30%);
     border-radius: .375rem;
+  }
+
+  .picture-upload{
+    top: 40%;
+    left: 47%;
+    height: 0px;
+    width: 0px;
   }
   
   .card-profile-image img:hover {
@@ -1570,6 +1577,12 @@
 
   .edit-btn{
     min-width: 5rem;
+  }
+
+  .upload-img-icon{
+    position: relative;
+    top: 50%;
+    left: 40px;
   }
   
   .main-content .navbar-top {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageModeService } from 'src/app/services/page-mode.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -8,26 +8,18 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css','../../../styles.css']
 })
-export class SidebarComponent implements OnInit, OnDestroy{
+export class SidebarComponent implements OnInit, OnDestroy {
   // To check whether to show the sidebar menu
   showMenu: boolean = false;
   // To check whether to display the contents in light mode / dark mode
   isDarkMode!: boolean;
   private readonly unsubscribe$: Subject<void> = new Subject();
-  // Retrieve some user information from Firestore
-  username!: string;
-  imageUrl!: string;
-  
-  constructor(private pm: PageModeService, public firebase: FirebaseService) { 
-  }
+
+
+  constructor(private pm: PageModeService, public firebase: FirebaseService) { }
 
   ngOnInit(): void {
     this.getPageMode();
-    this.firebase.getUserCapitalList().pipe(takeUntil(this.unsubscribe$)).subscribe(user =>
-      {
-        this.username = user.username;
-        this.imageUrl = user.imageUrl;
-      })
   }
 
   // Toggle the display of sidebar menu
@@ -46,11 +38,8 @@ export class SidebarComponent implements OnInit, OnDestroy{
     .subscribe(pageMode => this.isDarkMode = pageMode);
   }
 
-  terminateSubscription(): void{
-    this.unsubscribe$.next();
-  }
-
   ngOnDestroy(): void {
+    this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 }

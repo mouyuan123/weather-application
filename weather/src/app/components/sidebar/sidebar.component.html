@@ -1,31 +1,31 @@
 <div class="container-fluid g-0 fixing">
     <app-header (isMenuOpened)="toggleMenu()"></app-header>
     <div class="row g-0">
-        <aside *ngIf="firebase.isLoggedIn" class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu(); terminateSubscription()">
+        <aside *ngIf="firebase.isLoggedIn" class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
             <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu, 'slide-menu-grid-gap': !isDarkMode}" (click)="$event.stopImmediatePropagation();">
                 <section *ngIf="firebase.currentUser as user" class="menu-header" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode, 'menu-header-separator': isDarkMode}">
-                    <span class="greeting__text"><i style="cursor:pointer" class="bi bi-x-lg me-5" [class.font-contrast-color]="isDarkMode" (click)="toggleMenu(); terminateSubscription();"></i>&nbsp;Welcome Back</span>
+                    <span class="greeting__text"><i style="cursor:pointer" class="bi bi-x-lg me-5" [class.font-contrast-color]="isDarkMode" (click)="showMenu = false"></i>&nbsp;Welcome Back</span>
                     <div class="profile-image__container">
-                        <img height="50px" width="50px" src="{{(imageUrl)? imageUrl: '../../assets/images/user-default-profile.png'}}" alt="profile-image" class="profile__image">
+                        <img height="50px" width="50px" [src]="(user.photoURL)? user.photoURL: '../../assets/images/user-default-profile.png'" alt="profile-image" class="profile__image">
                     </div>
                     <div class="account-details">
-                        <span class="name__text">Hello, {{(username)? username: 'User'}}</span>
+                        <span class="name__text">Hello, {{(user.displayName)? user.displayName: 'User'}}</span>
                         <span class="email__text">{{user.email}}</span>
                     </div>
                 </section>
                 <section class="menu-body" [ngClass]="{'bg-color-dark':isDarkMode}">
                     <ul class="nav flex-column">
                         <li class="nav-item ms-5 me-5 mb-2">
-                            <a [ngClass]="{'font-contrast-color': isDarkMode}" (click)="terminateSubscription();" routerLink="/profile" routerLinkActive="link-active" class="nav-link " aria-current="page"><i class="bi bi-person me-2"></i>&nbsp;Profile</a>
+                            <a [ngClass]="{'font-contrast-color': isDarkMode}" routerLink="/profile" routerLinkActive="link-active" class="nav-link " aria-current="page"><i class="bi bi-person me-2"></i>&nbsp;Profile</a>
                           </li>
                         <li class="nav-item ms-5 me-5 mb-2">
-                          <a [ngClass]="{'font-contrast-color': isDarkMode}" (click)="terminateSubscription();" routerLink="/home" routerLinkActive="link-active" class="nav-link " aria-current="page"><i class="bi bi-house me-2"></i>&nbsp;Home</a>
+                          <a [ngClass]="{'font-contrast-color': isDarkMode}" routerLink="/home" routerLinkActive="link-active" class="nav-link " aria-current="page"><i class="bi bi-house me-2"></i>&nbsp;Home</a>
                         </li>
                         <li class="nav-item ms-5 me-5 mb-2">
-                          <a [ngClass]="{'font-contrast-color': isDarkMode}" (click)="terminateSubscription();" routerLink="/add-weather" routerLinkActive="link-active" class="nav-link"><i class="bi bi-plus-circle me-2"></i>&nbsp;Add City</a>
+                          <a [ngClass]="{'font-contrast-color': isDarkMode}" routerLink="/add-weather" routerLinkActive="link-active" class="nav-link"><i class="bi bi-plus-circle me-2"></i>&nbsp;Add City</a>
                         </li>
                         <li class="nav-item ms-5 me-5 mb-2">
-                          <a [ngClass]="{'font-contrast-color': isDarkMode}" (click)="firebase.signOut(); terminateSubscription();" routerLink="/login" routerLinkActive="link-active" class="nav-link"><i class="bi bi-box-arrow-right me-2"></i>&nbsp;Log Out</a>
+                          <a [ngClass]="{'font-contrast-color': isDarkMode}" (click)="firebase.signOut()" routerLink="/login" routerLinkActive="link-active" class="nav-link"><i class="bi bi-box-arrow-right me-2"></i>&nbsp;Log Out</a>
                         </li>
                       </ul>
                 </section>
