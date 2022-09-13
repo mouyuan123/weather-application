@@ -9,6 +9,7 @@
                         <img *ngSwitchCase="currentWeatherState === 'Rain' || currentWeatherState === 'Drizzle' || currentWeatherState === 'Mist'" src="../../../assets/images/heavy-rain-weather.png" alt="Raining day" />
                         <img *ngSwitchCase="currentWeatherState === 'Storm' || currentWeatherState === 'Thunderstorm'" src="../../../assets/images/storm-weather.png" alt="Thunderstorm day " />
                         <img *ngSwitchCase="currentWeatherState === 'Sunny' || currentWeatherState === 'Clear'" src="../../../assets/images/sunny-weather.png" alt="Sunny day " />
+                        <img *ngSwitchCase="currentWeatherState === 'Haze' || currentWeatherState === 'Fog' || currentWeatherState === 'Smoke'" src="../../../assets/images/haze.png" alt="Haze day " />
                         <img *ngSwitchDefault src="../../../assets/images/snowing-weather.png" alt="Snowing day " />
                     </div>
                     <div>

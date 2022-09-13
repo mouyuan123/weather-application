@@ -61,9 +61,10 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
       this.ws.getWeatherState(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(state => {this.currentWeatherState = state; 
         switch(this.currentWeatherState){
           case "Clouds": this.stateImg = '../../assets/images/cloudy-weather.png'; break;
-          case 'Rain' ||'Drizzle': this.stateImg = '../../assets/images/heavy-rain-weather.png'; break;
+          case 'Rain' ||'Drizzle' || 'Mist': this.stateImg = '../../assets/images/heavy-rain-weather.png'; break;
           case 'Storm' || 'Thunderstorm': this.stateImg = '../../assets/images/storm-weather.png'; break;
           case 'Sunny' || 'Clear': this.stateImg ='../../assets/images/sunny-weather.png'; break;
+          case 'Haze' || 'Fog' || 'Smoke': this.stateImg ='../../assets/images/haze.png'; break;
           default: this.stateImg = '../../assets/images/snowing-weather.png';
         }});
       this.ws.getCurrentTemp(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(temp => this.currentTemp = temp);
@@ -99,6 +100,9 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
                   ThunderstormCounter: 0,
                   SunnyCounter: 0,
                   ClearCounter: 0,
+                  HazeCounter: 0,
+                  FogCounter: 0,
+                  SmokeCounter: 0,
                   SnowCounter: 0,
                   avgTemp: forecast.main.temp,
                   counter: 1,
@@ -125,7 +129,10 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
                 this.forecast[day].StormCounter, 
                 this.forecast[day].ThunderstormCounter, 
                 this.forecast[day].SunnyCounter, 
-                this.forecast[day].ClearCounter, 
+                this.forecast[day].ClearCounter,
+                this.forecast[day].HazeCounter, 
+                this.forecast[day].FogCounter, 
+                this.forecast[day].SmokeCounter, 
                 this.forecast[day].SnowCounter
               );
               // Set the forecast weather state and state image corresponding to the weather with the highest occurences
@@ -138,6 +145,9 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
                 case highest === this.forecast[day].ThunderstormCounter: this.forecast[day]['predictedState'] = 'Thunderstorm'; this.forecast[day]['stateImg'] = '../../../assets/images/storm-weather.png'; break;
                 case highest === this.forecast[day].SunnyCounter: this.forecast[day]['predictedState'] = 'Sunny'; this.forecast[day]['stateImg'] = '../../../assets/images/sunny-weather.png'; break;
                 case highest === this.forecast[day].ClearCounter: this.forecast[day]['predictedState'] = 'Clear'; this.forecast[day]['stateImg'] = '../../../assets/images/sunny-weather.png'; break;
+                case highest === this.forecast[day].HazeCounter: this.forecast[day]['predictedState'] = 'Haze'; this.forecast[day]['stateImg'] = '../../../assets/images/haze.png'; break;
+                case highest === this.forecast[day].FogCounter: this.forecast[day]['predictedState'] = 'Fog'; this.forecast[day]['stateImg'] = '../../../assets/images/haze.png'; break;
+                case highest === this.forecast[day].SmokeCounter: this.forecast[day]['predictedState'] = 'Smoke'; this.forecast[day]['stateImg'] = '../../../assets/images/haze.png'; break;
                 default: this.forecast[day]['predictedState'] = 'Snow'; this.forecast[day]['stateImg'] = '../../../assets/images/snowing-weather.png'; break;
               }
             })
@@ -157,6 +167,9 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
       case 'Thunderstorm': this.forecast[day].ThunderstormCounter++; break;
       case 'Sunny': this.forecast[day].SunnyCounter++; break;
       case 'Clear': this.forecast[day].ClearCounter++; break;
+      case 'Haze': this.forecast[day].HazeCounter++; break;
+      case 'Fog': this.forecast[day].FogCounter++; break;
+      case 'Smoke': this.forecast[day].SmokeCounter++; break;
       default: this.forecast[day].SnowCounter++; break;
     }
   }

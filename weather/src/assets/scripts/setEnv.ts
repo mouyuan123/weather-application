@@ -35,6 +35,14 @@ writeFileUsingFS('./src/environments/environment.ts', '');
 // Checks whether command line argument of `prod` was provided signifying production mode
 const isProduction = environment === 'prod';
 
+if (!process.env.firebaseConfig || !process.env.WEATHER_API_KEY) {
+  console.error('All the required environment variables were not provided!');
+  process.exit(-1);
+}
+else{
+  console.log("All the environment variables are provided")
+}
+
 // choose the correct targetPath based on the environment chosen
 const targetPath = isProduction
   ? './src/environments/environment.prod.ts'
@@ -51,5 +59,6 @@ const environmentFileContent = `
 `;
 
 writeFileUsingFS(targetPath, environmentFileContent); // appending data into the target file
+
 
 /* tslint:enable */
