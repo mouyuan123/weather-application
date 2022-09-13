@@ -2036,10 +2036,6 @@
       margin-bottom: 10px;
     }
 
-    .details-page__wrapper{
-        grid-template-columns: auto;
-    }
-
     .card{
       /* Avoid the input form overlapping with the profile image */
       top: 40px;
@@ -2049,3 +2045,19 @@
   #navbar .navbar {
     margin-bottom: 20px;
   }
+
+  @media only screen and (max-width: 992px){
+  .details-page__wrapper{
+    grid-template-columns: auto;
+    height: 70vh;
+  }
+  .profile-site{
+    height: 80%;
+    margin-top: 25px;
+    margin-bottom: 100px;
+  }
+
+  .information-site{
+    height: auto;
+  }
+}

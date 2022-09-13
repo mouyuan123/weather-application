@@ -1,6 +1,6 @@
 <div class="loader-container" *ngIf="isLoading"><div class="loader"></div></div>
 <div class="container details-page__wrapper shadow-lg rounded-3 mt-5">
-  <div class="row justify-content-center position-relative">
+  <div class="profile-site row justify-content-center position-relative">
     <label for='picture' class="position-absolute picture-upload">
       <div class="card-profile-image position-relative" style='cursor: pointer;'>
         <img src="{{(imageUrl)? imageUrl: '../../assets/images/user-default-profile.png'}}" class="rounded-circle">
@@ -12,7 +12,7 @@
         <input type="submit">
     </form>
   </div>
-  <div class="row card bg-secondary shadow" [class.dark-mode-add-card-color]="isDarkMode">
+  <div class="information-site row card bg-secondary shadow" [class.dark-mode-add-card-color]="isDarkMode">
     <div class="card-header bg-white border-0">
       <div class="row align-items-center">
         <div class="col-8">
