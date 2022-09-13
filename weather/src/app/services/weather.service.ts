@@ -7,6 +7,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, of, Subject, throwError, retry } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { ErrorSuccessMessageService } from './error-success-message.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,17 @@ import { ErrorSuccessMessageService } from './error-success-message.service';
 export class WeatherService {
   capitalAdded:string[] = [];
   httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
+  private readonly WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather`;
+  private readonly FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast`;
+  // Register free subscription for OpenWeatherMap API and get your own API Key
+  private readonly WEATHER_API_KEY = environment.WEATHER_API;
 
 constructor(private http: HttpClient, private msg: ErrorSuccessMessageService) { }
 
 // Search the weather of specific capital of a country (Accepts only Celsius format here => units='metric')
 searchWeatherByCityName(cityName: string): Observable<any>{
    return this.http
-   .get<any>(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+   .get<any>(`${this.WEATHER_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
    .pipe
    (
     retry(1),
@@ -32,7 +37,7 @@ searchWeatherByCityName(cityName: string): Observable<any>{
 getWeatherState(cityName: string): Subject<string> {
   const dataSubject = new Subject<string>();
   this.http.get(
-    `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    `${this.WEATHER_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
     .pipe
     (
       retry(1),
@@ -48,7 +53,7 @@ getWeatherState(cityName: string): Subject<string> {
 getCurrentTemp(cityName: string): Subject<number> {
   const dataSubject = new Subject<number>();
   this.http.get(
-    `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    `${this.WEATHER_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
     .pipe
     (
       retry(1),
@@ -64,7 +69,7 @@ getCurrentTemp(cityName: string): Subject<number> {
 getCurrentHum(cityName: string): Subject<number> {
   const dataSubject = new Subject<number>();
   this.http.get(
-    `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    `${this.WEATHER_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
     .pipe
     (
       retry(1),
@@ -80,7 +85,7 @@ getCurrentHum(cityName: string): Subject<number> {
 getCurrentWind(cityName: string): Subject<number>  {
   const dataSubject = new Subject<number>();
   this.http.get(
-    `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    `${this.WEATHER_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
     .pipe
     (
       retry(1),
@@ -97,7 +102,7 @@ getMaxTemp(cityName: string): Subject<number>  {
   const dataSubject = new Subject<number>();
   let max: number;
   this.http.get(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    `${this.FORECAST_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
     .pipe
     (
       retry(1),
@@ -120,7 +125,7 @@ getMinTemp(cityName: string): Subject<number>  {
   const dataSubject = new Subject<number>();
   let min: number;
   this.http.get(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    `${this.FORECAST_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
     .pipe
     (
       retry(1),
@@ -142,7 +147,7 @@ getMinTemp(cityName: string): Subject<number>  {
 getForecast(cityName: string): Subject<Array<any>>  {
   const dataSubject = new Subject<Array<any>>();
   this.http.get(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=83939b8a3d51b9cee7d00e5732cd4509&units=metric`)
+    `${this.FORECAST_URL}?q=${cityName}&APPID=${this.WEATHER_API_KEY}&units=metric`)
     .pipe
     (
       retry(1),
