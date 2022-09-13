@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy{
    */
   getUserCapitalList(): void{
     this.isLoading = true;
-    this.firebase.getUserCapitalList()
+    this.firebase.getUserDetails()
     // Make sure the takeUntil() is always the last function in pipe() => *Best practice
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((user: any) => {user.capitalList.forEach((element: any) => {
@@ -73,15 +73,16 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.isLoading = false;});
   }
 
-  viewWeatherDetails(capital: string): void{
-    this.router.navigate(['/weather-details'], {queryParams:{country: capital}})
-  }
+  // viewWeatherDetails(capital: string): void{
+  //   this.router.navigate(['/weather-details'], {queryParams:{country: capital}})
+  // }
 
   /**
    * Whenever a component is destroyed, unsubscribe$.next() emit a new value so that the observer unsubscribe
    * to the observable using takeUntil()
    */
   ngOnDestroy(){
+    console.log("destroy")
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

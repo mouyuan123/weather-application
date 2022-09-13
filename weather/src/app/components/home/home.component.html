@@ -2,62 +2,21 @@
 <div class="loader-container" *ngIf="isLoading"><div class="loader"></div></div>
 <div class="container">
     <ng-container *ngIf="capitals">
-            <a class="weather-wrapper mb-5" (click)="viewWeatherDetails(capital)" *ngFor="let capital of capitals; let i = index; let last = last">
-                <div class="card shadow rounded">
-                    <div class="weather-card card text-center" [class.dark-mode-card-color]="isDarkMode">
-                        <div class="card-body">
-                            <div class="d-flex flex-column">
-                                <h4 class="country-name fs-2">{{capital}}</h4>
-                                <div class="p-2" [ngSwitch]="true">
-                                    <img *ngSwitchCase="currentWeatherState[i] === 'Clouds'" src="../../../assets/images/cloudy-weather.png" alt="Cloudy day " />
-                                    <img *ngSwitchCase="currentWeatherState[i] === 'Rain' || currentWeatherState[i] === 'Drizzle' || currentWeatherState[i] === 'Mist'" src="../../../assets/images/heavy-rain-weather.png" alt="Raining day" />
-                                    <img *ngSwitchCase="currentWeatherState[i] === 'Storm' || currentWeatherState[i] === 'Thunderstorm'" src="../../../assets/images/storm-weather.png" alt="Thunderstorm day " />
-                                    <img *ngSwitchCase="currentWeatherState[i] === 'Sunny' || currentWeatherState[i] === 'Clear'" src="../../../assets/images/sunny-weather.png" alt="Sunny day " />
-                                    <img *ngSwitchDefault src="../../../assets/images/snowing-weather.png" alt="Snowing day " />
-                                </div>
-                                <div>
-                                    <h3 class="degree fs-3"><strong>{{currentTemp[i]}}&#176;</strong></h3>
-                                    <p class="weather mb-0 fs-3">{{currentWeatherState[i]}}</p>
-                                    <div class='d-flex justify-content-evenly'>
-                                        <div class="d-flex flex-column bd-highlight justify-content-center ms-4 ">
-                                            <div><i class="bi bi-caret-down-fill min-degree "></i></div>
-                                            <div>
-                                                <span class="degree fs-3">{{minTemp[i]}}</span>
-                                            </div>
-                                            <div>
-                                                <span class="min-degree degree fs-3">Min</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-column bd-highlight justify-content-center me-4 ">
-                                            <div><i class="bi bi-caret-up-fill max-degree "></i></div>
-                                            <div>
-                                                <span class="degree fs-3">{{maxTemp[i]}}</span>
-                                            </div>
-                                            <div>
-                                                <span class="max-degree degree fs-3">Max</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </a>
+        <app-weather-card *ngFor="let capital of capitals" [capital]= "capital"></app-weather-card>
     </ng-container>
-<div class="col">
-    <div class="card shadow rounded">
-        <div class="add-weather-card card text-center" [class.dark-mode-add-card-color]="isDarkMode">
-            <div class="card-body">
-                <div class="d-flex flex-column">
-                    <h4 class="country-name">Add City</h4>
-                    <div class="p-2 ">
-                        <a routerLink="/add-weather"><img  src="../../../assets/images/add-more.png " alt="sunny day" /></a>
+    <div class="col">
+        <div class="card shadow rounded">
+            <div class="add-weather-card card text-center" [class.dark-mode-add-card-color]="isDarkMode">
+                <div class="card-body">
+                    <div class="d-flex flex-column">
+                        <h4 class="country-name">Add City</h4>
+                        <div class="p-2 ">
+                            <a routerLink="/add-weather"><img  src="../../../assets/images/add-more.png " alt="sunny day" /></a>
+                        </div>
+                        <div class="p-2"><img width="183px" src="../../../assets/images/city.png " alt="sunny day" /></div>
                     </div>
-                    <div class="p-2"><img width="183px" src="../../../assets/images/city.png " alt="sunny day" /></div>
                 </div>
             </div>
         </div>
+    </div>        
 </div>
-</div>        
-  </div>

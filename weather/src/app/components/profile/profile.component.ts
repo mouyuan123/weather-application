@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getPageMode();
     this.isLoading = true;
-    this.firebase.getUserCapitalList().pipe(takeUntil(this.unsubscribe$)).subscribe(user =>
+    this.firebase.getUserDetails().pipe(takeUntil(this.unsubscribe$)).subscribe(user =>
       {
         this.uid = user.uid;
         this.email = user.email;
@@ -57,17 +57,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   uploadImageFile(event: any): void{
-    this.isLoading = true;
-    this.imageUpload.uploadImage(event.target.files[0], `images/profile/${this.uid}`)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((result) => 
-    {
-      this.firebase.updateUserData(1, result).then(() =>
+    if(event.target.files[0] !== undefined){
+      this.isLoading = true;
+      this.imageUpload.uploadImage(event.target.files[0], `images/profile/${this.uid}`)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => 
       {
-        this.imageUrl = result;
-        this.isLoading = false
+        this.firebase.updateUserData(1, result).then(() =>
+        {
+          this.imageUrl = result;
+          this.isLoading = false
+        });
       });
-    });
+    }
   }
 
   ngOnDestroy(): void {

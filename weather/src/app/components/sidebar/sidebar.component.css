@@ -132,22 +132,19 @@
 }
 
 .profile-image__container {
-    grid-area: image;
-    margin-right: 0.5rem;
-    border-radius: 50%;
-    height: 4rem;
-    width: 4rem;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
-    align-self: center;
     margin-left: 2rem;
 }
 
 .profile__image {
-    max-width: 4rem;
+    padding: 2px;
+    border-radius: 50%;
+    border-top-color: #ff5722;
+    border-left-color: #ff5722;
+    width: 100px;
+    height: 100px;
 }
 
 

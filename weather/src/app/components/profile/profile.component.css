@@ -1520,7 +1520,8 @@
     /* position: absolute;
     left: 47%;
     top: 40%; */
-    max-width: 180px;
+    width: 180px;
+    height: 180px;
     transition: all .15s ease;
     transform: translate(-50%, -30%);
     border-radius: .375rem;
@@ -2037,6 +2038,11 @@
 
     .details-page__wrapper{
         grid-template-columns: auto;
+    }
+
+    .card{
+      /* Avoid the input form overlapping with the profile image */
+      top: 40px;
     }
   }
   

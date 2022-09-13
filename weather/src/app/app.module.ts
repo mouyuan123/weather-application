@@ -33,6 +33,7 @@ import { environment } from 'src/environments/environment';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { WeatherCardComponent } from './ui/weather-card/weather-card.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
     PasswordResetComponent,
     ProfileComponent,
     EditProfileComponent,
+    WeatherCardComponent,
   ],
   imports: [
     BrowserModule,

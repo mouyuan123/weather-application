@@ -109,7 +109,7 @@ goBack(): void{
  * Retreive the capital list that is added by the user (to display real time weather [3 hours interval] of each capital)
  */
   getUserCapitalList(): void{
-  this.firebase.getUserCapitalList().pipe(takeUntil(this.unsubscribe$)).subscribe((user: any) => this.capitalList = user.capitalList);
+  this.firebase.getUserDetails().pipe(takeUntil(this.unsubscribe$)).subscribe((user: any) => this.capitalList = user.capitalList);
 }
 
 // Toggle between 'Add' and 'Added' button

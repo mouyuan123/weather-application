@@ -13,8 +13,10 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { arrayRemove, arrayUnion } from 'firebase/firestore';
 import { Subject } from 'rxjs';
 import { ErrorSuccessMessageService } from './error-success-message.service';
-// Update the "displayName" and "photoUrl" of the current user
-import { updateProfile } from 'firebase/auth';
+// UdateProfile() => Update the "displayName" and "photoUrl" of the current user
+// getAuth() => Retrieve the current user
+import { updateProfile, getAuth } from 'firebase/auth';
+
 
 @Injectable({
   providedIn: 'root'
@@ -158,18 +160,22 @@ export class FirebaseService {
     switch (code) {
       case 0: try {
         await userRef.update({ username: value });
-        updateProfile(this.currentUser,{
+        // Retrieve the current user 
+        const auth = getAuth();
+        await updateProfile(auth.currentUser!,{
           displayName: value
-        }).then(() => localStorage.setItem('user', JSON.stringify(this.currentUser)));
+        }).then(() => {this.currentUser = auth.currentUser!; localStorage.setItem('user', JSON.stringify(auth.currentUser!))});
         return this.msg.showSuccess("Update the username successfully");
       } catch (error: any) {
         return this.msg.showFailure('Something wrong happens: ' + error.message);
       }
       default: try {
         await userRef.update({ imageUrl: value });
-        updateProfile(this.currentUser,{
+        // Retrieve the current user 
+        const auth = getAuth();
+        await updateProfile(auth.currentUser!,{
           photoURL: value
-        }).then(() => localStorage.setItem('user', JSON.stringify(this.currentUser)));
+        }).then(() => {this.currentUser = auth.currentUser!; localStorage.setItem('user', JSON.stringify(auth.currentUser!))});
         return this.msg.showSuccess("Update your profile picture successfully");
       } catch (error_1: any) {
         return this.msg.showFailure('Something wrong happens: ' + error_1.message);
@@ -211,7 +217,7 @@ export class FirebaseService {
   }
 
   // Retrieve complete fields of a document (user) from the collections (users)
-  getUserCapitalList(): Subject<any> {
+  getUserDetails(): Subject<any> {
     // Retrieve the user id using local storage rather than 'currentUser'
     // This method will be used at other component and asynchrounous fetched may cause errors (component is loaded when the currentUser fetching is incomplete)
     const userid = JSON.parse(localStorage.getItem('user')!)['uid'];
