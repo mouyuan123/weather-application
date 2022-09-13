@@ -2,6 +2,7 @@
 <div class="loader-container" *ngIf="isLoading"><div class="loader"></div></div>
 <div class="container">
     <ng-container *ngIf="capitals">
+        <!--  Create multiple <app-weather-card> with each having different information for each capital added -->
         <app-weather-card *ngFor="let capital of capitals" [capital]= "capital"></app-weather-card>
     </ng-container>
     <div class="col">

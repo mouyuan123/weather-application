@@ -20,7 +20,6 @@
   background: linear-gradient(-225deg, #ffffff 0%, #FFE29F 10%, #FFA99F 48%, #ffd1ff 100%);
   animation: scaleup-circle 900ms ease-in-out forwards;
   transition: background 1s ease-in-out;
-
 }
 
 .background-gradient__circle-dark {
@@ -187,6 +186,23 @@
   flex-flow: row;
   margin-left: 1rem;
   flex-wrap: wrap;
+}
+
+.forecast-divider{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.capital-img-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.capital-img{
+  height: 200px;
+  width: 30%;
+  box-shadow: 4px 4px 10px #000;
 }
 
 .twitter-feed__container {
@@ -367,5 +383,17 @@
 
   .city-name__container {
     padding-bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 1620px){
+  .forecast-divider{
+    grid-template-columns: auto;
+    margin-top: 10%;
+  }
+
+  .forecast__container{
+    position: relative;
+    left: 15%;
   }
 }

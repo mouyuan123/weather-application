@@ -82,7 +82,6 @@ export class HomeComponent implements OnInit, OnDestroy{
    * to the observable using takeUntil()
    */
   ngOnDestroy(){
-    console.log("destroy")
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

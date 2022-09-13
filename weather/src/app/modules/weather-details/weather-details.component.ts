@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forecast } from 'src/app/forecast';
 import { Subject, takeUntil } from 'rxjs';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { ImageUploadService } from 'src/app/services/image-upload.service';
+import { ErrorSuccessMessageService } from 'src/app/services/error-success-message.service';
 
 @Component({
   selector: 'app-weather-details',
@@ -34,9 +36,20 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
   isLoading = true;
   // Check whether it is mobile version
   isMobile!: boolean;
+  // Retrieve the image of the capital from the Firebase Storage
+  capitalUrl!: string;
   private readonly unsubscribe$: Subject<void> = new Subject();
 
-  constructor(private pms: PageModeService, private ws: WeatherService, private router: Router, private ar: ActivatedRoute, private firebase: FirebaseService) { }
+  constructor
+  (
+    private pms: PageModeService, 
+    private ws: WeatherService, 
+    private router: Router, 
+    private ar: ActivatedRoute, 
+    private firebase: FirebaseService,
+    private imageService: ImageUploadService,
+    private message: ErrorSuccessMessageService
+  ) { }
 
   @HostListener('window: resize', ['$event'])
   onResize(event: any){
@@ -53,11 +66,28 @@ export class WeatherDetailsComponent implements OnInit, OnDestroy {
     this.pms.getPageMode().pipe(takeUntil(this.unsubscribe$)).subscribe(pageMode => this.isDarkMode = pageMode);
   }
 
+  getCapitalUrl(): void{
+    this.isLoading = true;
+    this.imageService.retrieveImage(this.clickedCapital!)
+    .then(imageUrl => {this.capitalUrl = imageUrl; this.isLoading = false})
+    .catch(error => 
+    {
+      switch (error.code) 
+      {
+        case 'storage/object-not-found': this.message.showFailure("Image file doesn't exist / not supported currently"); break;
+        case 'storage/unauthorized': this.message.showFailure("User doesn't have permission to access the object"); break;
+        default: this.message.showFailure("Unknown error occurred, inspect the server response"); break;
+      }
+    }
+  );
+  }
+
   getClickedCapitalDetails(): void{
     this.isLoading = true;
     // Retrieve the current capital clicked from the query params of the URL
     this.clickedCapital = this.ar.snapshot.queryParams['country'];
     if(this.clickedCapital){
+      this.getCapitalUrl();
       this.ws.getWeatherState(this.clickedCapital).pipe(takeUntil(this.unsubscribe$)).subscribe(state => {this.currentWeatherState = state; 
         switch(this.currentWeatherState){
           case "Clouds": this.stateImg = '../../assets/images/cloudy-weather.png'; break;
