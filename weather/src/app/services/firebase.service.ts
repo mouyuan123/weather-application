@@ -66,11 +66,10 @@ export class FirebaseService {
   // Sign up a new user to Firebase
   async signUpNewUser(email: string, password: string) {
     try {
-      await this.auth.createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          this.verifyEmail();
-          this.setNewUserData(user.user);
-        });
+      // await => wait until "this.auth.createUserWithEmailAndPassword(email, password)" finish and get the value directly ( Same as value returned by "then" in Promise)
+       let user = await this.auth.createUserWithEmailAndPassword(email, password)
+       this.verifyEmail();
+       this.setNewUserData(user.user);
       // Avoid the user opening the side menu when he / she signs up only
       localStorage.setItem('login', JSON.stringify(false));
       this.msg.showSuccess("You have registered successfully!");
@@ -84,8 +83,9 @@ export class FirebaseService {
 
   async verifyEmail(): Promise<any> {
     try {
-      await this.auth.currentUser.then((user: any) => { user.sendEmailVerification(); })
-      this.msg.showSuccess("A verification email is sent to your email. Please check");
+       let user = await this.auth.currentUser;
+       user?.sendEmailVerification();
+       this.msg.showSuccess("A verification email is sent to your email. Please check");
     } catch (error: any) {
       this.msg.showFailure(error.message);
     }
@@ -94,21 +94,21 @@ export class FirebaseService {
   // Sign in existing user
   async signInUser(email: string, password: string): Promise<any> {
     try {
-      await this.auth.signInWithEmailAndPassword(email, password)
-        .then((user: any) => {
-          if (user.user.emailVerified) {
-            const userUpdate = JSON.parse(localStorage.getItem('user')!);
-            userUpdate['emailVerified'] = true;
-            this.currentUser = userUpdate;
-            localStorage.setItem('user', JSON.stringify(this.currentUser));
-            localStorage.setItem('login', JSON.stringify(true));
-            this.msg.showSuccess('You have signed in successfully');
-            this.router.navigateByUrl("/home");
-          }
-          else {
-            this.msg.showFailure('Please verify your email before logging in');
-          }
-        });
+      let user = await this.auth.signInWithEmailAndPassword(email, password)
+      if(user.user){
+        if (user.user.emailVerified) {
+          const userUpdate = JSON.parse(localStorage.getItem('user')!);
+          userUpdate['emailVerified'] = true;
+          this.currentUser = userUpdate;
+          localStorage.setItem('user', JSON.stringify(this.currentUser));
+          localStorage.setItem('login', JSON.stringify(true));
+          this.msg.showSuccess('You have signed in successfully');
+          this.router.navigateByUrl("/home");
+        }
+        else {
+          this.msg.showFailure('Please verify your email before logging in');
+        }
+      }
       // Allows the user open / close the side menu when he / she logged in
     } catch (error: any) {
       if (error.code == 'auth/wrong-password') { this.msg.showFailure('Invalid password. Please try again.'); }
@@ -162,9 +162,12 @@ export class FirebaseService {
         await userRef.update({ username: value });
         // Retrieve the current user 
         const auth = getAuth();
+        // Wait until the firebase update the user's displayName completely
         await updateProfile(auth.currentUser!,{
           displayName: value
-        }).then(() => {this.currentUser = auth.currentUser!; localStorage.setItem('user', JSON.stringify(auth.currentUser!))});
+        });
+        this.currentUser = auth.currentUser!; 
+        localStorage.setItem('user', JSON.stringify(auth.currentUser!));
         return this.msg.showSuccess("Update the username successfully");
       } catch (error: any) {
         return this.msg.showFailure('Something wrong happens: ' + error.message);
@@ -173,9 +176,12 @@ export class FirebaseService {
         await userRef.update({ imageUrl: value });
         // Retrieve the current user 
         const auth = getAuth();
+        // Wait until Firebase update the user's photoURL completely
         await updateProfile(auth.currentUser!,{
           photoURL: value
-        }).then(() => {this.currentUser = auth.currentUser!; localStorage.setItem('user', JSON.stringify(auth.currentUser!))});
+        });
+        this.currentUser = auth.currentUser!; 
+        localStorage.setItem('user', JSON.stringify(auth.currentUser!));
         return this.msg.showSuccess("Update your profile picture successfully");
       } catch (error_1: any) {
         return this.msg.showFailure('Something wrong happens: ' + error_1.message);
