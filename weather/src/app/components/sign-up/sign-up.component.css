@@ -151,3 +151,22 @@
     color: #ff3a82;
     margin-left: 1rem;
   }
+
+  /* Smallest mobile view */
+  @media screen and (max-width: 280px){
+    .login-link{
+      margin-left: 0;
+    }
+    .login-link-wrapper{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  @media screen and (max-width: 959px) {
+    .signup-aside {
+      display: none;
+    }
+}

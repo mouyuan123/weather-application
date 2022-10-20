@@ -156,7 +156,19 @@
     margin-left: 1rem;
   }
   
-  
+  /* Smallest mobile view */
+  @media screen and (max-width: 280px){
+    .signup-link{
+      margin-left: 0;
+    }
+    .signup-link-wrapper{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
   @media screen and (max-width: 959px) {
     .login-aside {
       display: none;

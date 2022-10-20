@@ -5,7 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+// Pop up the message when the user "idle" state is almost timeout
+import { DialogModule } from 'primeng/dialog';
 // import { ServiceWorkerModule } from '@angular/service-worker';
 
 
@@ -27,6 +30,8 @@ import { PageModeService } from './services/page-mode.service';
 import { ErrorSuccessMessageService } from './services/error-success-message.service';
 import { WeatherService } from './services/weather.service';
 import { FirebaseService } from './services/firebase.service';
+import { ConfirmationService } from 'primeng/api';
+import { CheckIdleService } from './services/check-idle.service';
 
 // Environment
 import { environment } from 'src/environments/environment';
@@ -37,7 +42,8 @@ import { WeatherCardComponent } from './ui/weather-card/weather-card.component';
 
 
 @NgModule({
-  declarations: [
+  declarations: 
+  [
     AppComponent,
     SidebarComponent,
     HeaderComponent,
@@ -49,7 +55,8 @@ import { WeatherCardComponent } from './ui/weather-card/weather-card.component';
     EditProfileComponent,
     WeatherCardComponent,
   ],
-  imports: [
+  imports: 
+  [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -59,15 +66,19 @@ import { WeatherCardComponent } from './ui/weather-card/weather-card.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    FormsModule
-    // ServiceWorkerModule.register('ngsw-worker.js', {
-    //   enabled: environment.production,
-    //   // Register the ServiceWorker as soon as the application is stable
-    //   // or after 30 seconds (whichever comes first).
-    //   registrationStrategy: 'registerWhenStable:30000'
-    // })
+    FormsModule,
+    NgIdleKeepaliveModule.forRoot(),
+    DialogModule
   ],
-  providers: [PageModeService, ErrorSuccessMessageService, WeatherService, FirebaseService],
+  providers: 
+  [
+    PageModeService, 
+    ErrorSuccessMessageService, 
+    WeatherService,
+    FirebaseService, 
+    ConfirmationService,
+    CheckIdleService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -22,17 +22,21 @@
     "@angular/platform-browser-dynamic": "^14.1.0",
     "@angular/router": "^14.1.0",
     "@angular/service-worker": "^14.1.0",
+    "@ng-idle/core": "^11.1.0",
+    "@ng-idle/keepalive": "^11.0.3",
     "angularfire-lite": "^6.0.3",
     "bootstrap": "^5.2.0",
     "bootstrap-icons": "^1.9.1",
+    "dotenv": "^7.0.0",
     "firebase": "^9.9.3",
     "jquery": "^3.6.0",
     "ngx-toastr": "^15.0.0",
+    "primeicons": "^6.0.1",
+    "primeng": "^14.1.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4",
     "twitter": "^1.7.1",
-    "dotenv": "^7.0.0"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.1.0",

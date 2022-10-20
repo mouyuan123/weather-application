@@ -3,16 +3,30 @@
     <div class="row g-0">
         <aside *ngIf="firebase.isLoggedIn" class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
             <nav class="slide-menu" [ngClass]="{'slide-menu-active': showMenu, 'slide-menu-grid-gap': !isDarkMode}" (click)="$event.stopImmediatePropagation();">
-                <section *ngIf="firebase.currentUser as user" class="menu-header" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode, 'menu-header-separator': isDarkMode}">
-                    <span class="greeting__text"><i style="cursor:pointer" class="bi bi-x-lg me-5" [class.font-contrast-color]="isDarkMode" (click)="showMenu = false"></i>&nbsp;Welcome Back</span>
-                    <div class="profile-image__container">
-                        <img height="50px" width="50px" [src]="(user.photoURL)? user.photoURL: '../../assets/images/user-default-profile.png'" alt="profile-image" class="profile__image">
-                    </div>
-                    <div class="account-details">
-                        <span class="name__text">Hello, {{(user.displayName)? user.displayName: 'User'}}</span>
-                        <span class="email__text">{{user.email}}</span>
-                    </div>
-                </section>
+                <ng-container *ngIf="!isMobile">
+                    <section *ngIf="firebase.currentUser as user" class="menu-header" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode, 'menu-header-separator': isDarkMode}">
+                        <span class="greeting__text"><i style="cursor:pointer" class="bi bi-x-lg me-5" [class.font-contrast-color]="isDarkMode" (click)="showMenu = false"></i>&nbsp;Welcome Back</span>
+                        <div class="profile-image__container">
+                            <img height="50px" width="50px" [src]="(user.photoURL)? user.photoURL: '../../assets/images/user-default-profile.png'" alt="profile-image" class="profile__image">
+                        </div>
+                        <div class="account-details">
+                            <span class="name__text">Hello, {{(user.displayName)? user.displayName: 'User'}}</span>
+                            <span class="email__text">{{user.email}}</span>
+                        </div>
+                    </section>
+                </ng-container>
+                <ng-container *ngIf="isMobile">
+                    <section *ngIf="firebase.currentUser as user" class="menu-header-mobile row" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color': isDarkMode, 'menu-header-separator': isDarkMode}">
+                        <span class="greeting__text col-12 mb-3"><i style="cursor:pointer" class="bi bi-x-lg me-5 custom-ms-5 custom-me-1" [class.font-contrast-color]="isDarkMode" (click)="showMenu = false"></i>&nbsp;Welcome Back</span>
+                        <div class="profile-image__container col-12">
+                            <img height="50px" width="50px" [src]="(user.photoURL)? user.photoURL: '../../assets/images/user-default-profile.png'" alt="profile-image" class="profile__image">
+                        </div>
+                        <div class="account-details mb-2 col-12 d-flex flex-column align-items-center justify-content-center">
+                            <span class="name__text">Hello, {{(user.displayName)? user.displayName: 'User'}}</span>
+                            <span class="email__text">{{user.email}}</span>
+                        </div>
+                    </section>
+                </ng-container>
                 <section class="menu-body" [ngClass]="{'bg-color-dark':isDarkMode}">
                     <ul class="nav flex-column">
                         <li class="nav-item ms-5 me-5 mb-2">
@@ -39,3 +53,17 @@
         </div>
     </div>
 </div>
+
+<p-dialog 
+header="You're inactive" 
+[(visible)]="isIdle" 
+[modal]="true" 
+[style]="{width: '50vw'}" 
+[baseZIndex]="10000"
+[draggable]="false" 
+[resizable]="false"
+[dismissableMask]="true">
+    <p class="m-0">{{idleStateMsg}}</p>
+        <ng-template pTemplate="footer">
+        </ng-template>
+</p-dialog>

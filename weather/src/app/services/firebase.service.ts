@@ -16,6 +16,8 @@ import { ErrorSuccessMessageService } from './error-success-message.service';
 // UdateProfile() => Update the "displayName" and "photoUrl" of the current user
 // getAuth() => Retrieve the current user
 import { updateProfile, getAuth } from 'firebase/auth';
+// Start the idle service when the user logged in
+import { CheckIdleService } from './check-idle.service';
 
 
 @Injectable({
@@ -38,9 +40,18 @@ export class FirebaseService {
     private auth: AngularFireAuth, 
     private firestore: AngularFirestore, 
     private router: Router, 
-    private msg: ErrorSuccessMessageService
+    private msg: ErrorSuccessMessageService,
+    private idle: CheckIdleService
   ) {
     this.getCurrentUserStatus();
+    // Make it working even after page refreshing
+    if(localStorage.getItem('user')){
+      // Start to track user status
+      this.idle.setIdle();
+      this.idle.setTimeout();
+      this.idle.setInterrupts();
+      this.idle.reset();
+    }
   }
 
   // Track current user status (logged in / log out)
@@ -104,6 +115,11 @@ export class FirebaseService {
           localStorage.setItem('login', JSON.stringify(true));
           this.msg.showSuccess('You have signed in successfully');
           this.router.navigateByUrl("/home");
+          // Start to track user status
+          this.idle.setIdle();
+          this.idle.setTimeout();
+          this.idle.setInterrupts();
+          this.idle.reset();
         }
         else {
           this.msg.showFailure('Please verify your email before logging in');
@@ -131,6 +147,7 @@ export class FirebaseService {
   async signOut(): Promise<any> {
     try {
       await this.auth.signOut();
+      this.idle.stop();
       return localStorage.removeItem('user');
     } catch (error: any) {
       return this.msg.showFailure(error.message);

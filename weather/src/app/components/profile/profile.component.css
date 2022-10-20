@@ -202,7 +202,7 @@
   html [type='button'],
   [type='reset'],
   [type='submit'] {
-    -webkit-appearance: button;
+    --webkit-appearance: button;
   }
   
   button::-moz-focus-inner,
@@ -223,7 +223,7 @@
   input[type='time'],
   input[type='datetime-local'],
   input[type='month'] {
-    -webkit-appearance: listbox;
+    --webkit-appearance: listbox;
   }
   
   textarea {
@@ -254,17 +254,17 @@
   
   [type='search'] {
     outline-offset: -2px;
-    -webkit-appearance: none;
+    --webkit-appearance: none;
   }
   
   [type='search']::-webkit-search-cancel-button,
   [type='search']::-webkit-search-decoration {
-    -webkit-appearance: none;
+    --webkit-appearance: none;
   }
   
   ::-webkit-file-upload-button {
     font: inherit;
-    -webkit-appearance: button;
+    --webkit-appearance: button;
   }
   
   [hidden] {
@@ -2031,28 +2031,18 @@
     display: block;
   }
   
-  @media (max-width: 768px) {
-    .btn {
-      margin-bottom: 10px;
-    }
-
-    .card{
-      /* Avoid the input form overlapping with the profile image */
-      top: 40px;
-    }
-  }
-  
   #navbar .navbar {
     margin-bottom: 20px;
   }
 
-  @media only screen and (max-width: 992px){
+
+  @media screen and (max-width: 767px){
   .details-page__wrapper{
     grid-template-columns: auto;
     height: 70vh;
   }
   .profile-site{
-    height: 80%;
+    height: 100px;
     margin-top: 25px;
     margin-bottom: 100px;
   }
@@ -2060,4 +2050,15 @@
   .information-site{
     height: auto;
   }
+}
+
+/* Tablet View*/
+@media screen and (min-width: 768px) and (max-width: 992px){
+  .details-page__wrapper{
+    width: 700px;
+    height: 400px;
+  }
+   .profile-site{
+    margin-right: 15px;
+   }
 }
