@@ -43,14 +43,9 @@
     </g>
   </svg>
   <div class="container details-page__wrapper shadow-lg rounded-3 position-relative" [ngClass]="{'details-page__wrapper-dark': isDarkMode}">
-    <div class="row row-cols-1 m-5">
-      <div class="col">
+    <div class="row my-5">
+      <div class="col-12">
         <div class="header-content__wrapper">
-          <div *ngIf="isMobile" class="city-name__container">
-            <div class="city-name__underline" [ngClass]="{'dark_city-name__underline': isDarkMode}">
-              <span class="city-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{clickedCapital}}</span>
-            </div>
-          </div>
           <div class="today-weather__container">
             <!--{{today}}-->
             <div class="temp-state__container">
@@ -69,32 +64,17 @@
               </div>
             </div>
           </div>
-          <div *ngIf="!isMobile" class="city-name__container">
-            <div class="city-name__underline" [ngClass]="{'dark_city-name__underline': isDarkMode}">
-              <span class="city-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{clickedCapital}}</span>
-            </div>
+          <div class="city-name__container">
+            <div class="city-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{clickedCapital}}</div>
           </div>
         </div>
       </div>
-      <div class="col forecast-divider">
-        <div class="capital-img-container">
-          <img [src]="capitalUrl" alt="capital image" class="capital-img"/>
-        </div>
-        <section class="forecast__container m-5">
-          <div class="day-weather__container" [ngSwitch]="true" *ngFor="let day of forecast | keyvalue: returnZero">
-            <span class="day-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.key}}</span>
-            <img class='forecast-condition__icon' src='{{day.value.stateImg}}' />
-            <span class="day-temp__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.avgTemp}}°</span>
-            <span class="day-state__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.predictedState}}</span>
-          </div> 
-        </section>
-      </div>
-      <!-- <div class="row m-5 ps-0">
-        <div class="col-3">
-          <img [src]="capitalUrl"/>
-        </div>
-        <div class="col-9">
-          <section class="forecast__container">
+      <div class="col-12 my-5 m-xxl-5 mobile-margin">
+        <div class="row">
+          <div class="col-12 col-xxl-5 d-flex justify-content-center">
+            <img [src]="capitalUrl" alt="capital image" class="capital-img"/>
+          </div>
+          <section class="col-12 mt-3 col-xxl-6 ms-xxl-3 mt-xxl-0 forecast__container">
             <div class="day-weather__container" [ngSwitch]="true" *ngFor="let day of forecast | keyvalue: returnZero">
               <span class="day-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.key}}</span>
               <img class='forecast-condition__icon' src='{{day.value.stateImg}}' />
@@ -103,7 +83,7 @@
             </div> 
           </section>
         </div>
-      </div> -->
+      </div>
       <button type="button" class="btn btn-link position-absolute p-0 m-0 fs-5 delete-btn" data-bs-toggle="modal" data-bs-placement="right" data-bs-target="#deleteWeather" title="Delete added weather">Delete</button>
     </div>
   </div>

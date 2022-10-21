@@ -47,13 +47,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     .subscribe(pageMode => this.isDarkMode = pageMode);
   }
 
-  updateUsername(): void{
+  async updateUsername(): Promise<void>{
     this.isLoading = true;
-    this.firebase.updateUserData(0, this.username).then(() => 
-    {
-      this.enableEdit()
-      this.isLoading = false; 
-    });
+    await this.firebase.updateUserData(0, this.username);
+    this.enableEdit()
+    this.isLoading = false; 
   }
 
   uploadImageFile(event: any): void{

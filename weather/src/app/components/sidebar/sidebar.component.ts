@@ -46,8 +46,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     ) 
     {
       this.getUseState();
-      this.idle.onIdleStart().pipe(takeUntil(this.unsubscribe$)).subscribe(() => { this.isIdle = true; this.idle.setIdleState(this.isIdle); console.log('here1')})
-      this.idle.onIdleEnd().pipe(takeUntil(this.unsubscribe$)).subscribe(() => { this.isIdle = false; this.idle.setIdleState(this.isIdle); console.log('here2')})
+      this.idle.onIdleStart().pipe(takeUntil(this.unsubscribe$)).subscribe(() => { this.isIdle = true; this.idle.setIdleState(this.isIdle);})
+      this.idle.onIdleEnd().pipe(takeUntil(this.unsubscribe$)).subscribe(() => { this.isIdle = false; this.idle.setIdleState(this.isIdle);})
       this.idle.onTimeoutWarning().pipe(takeUntil(this.unsubscribe$)).subscribe(countdown => this.idleStateMsg = `You'll be logged out in ${countdown} seconds.`)
       this.idle.onTimeout().pipe(takeUntil(this.unsubscribe$)).subscribe(() => 
       { this.isIdle = false; 

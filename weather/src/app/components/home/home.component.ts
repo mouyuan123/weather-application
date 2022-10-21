@@ -63,20 +63,33 @@ export class HomeComponent implements OnInit, OnDestroy{
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((user: any) => {user.capitalList.forEach((element: any) => {
       this.capitals.push(element);
-      this.ws.getWeatherState(element).pipe(takeUntil(this.unsubscribe$)).subscribe(state => this.currentWeatherState.push(state));
-      this.ws.getCurrentTemp(element).pipe(takeUntil(this.unsubscribe$)).subscribe(temp => this.currentTemp.push(temp));
-      this.ws.getCurrentHum(element).pipe(takeUntil(this.unsubscribe$)).subscribe(humidity => this.currentHum.push(humidity));
-      this.ws.getCurrentWind(element).pipe(takeUntil(this.unsubscribe$)).subscribe(windSpeed => this.currentWind.push(windSpeed));
-      this.ws.getMaxTemp(element).pipe(takeUntil(this.unsubscribe$)).subscribe(maxTemp => this.maxTemp.push(maxTemp));
-      this.ws.getMinTemp(element).pipe(takeUntil(this.unsubscribe$)).subscribe(minTemp => this.minTemp.push(minTemp));
+      this.ws.searchWeatherByCityName(element).pipe(takeUntil(this.unsubscribe$)).subscribe((weatherDetails: any) =>
+        {
+          this.currentWeatherState.push(weatherDetails['weather'][0].main);
+          this.currentTemp.push(Math.round(weatherDetails.main.temp));
+          this.currentHum.push(weatherDetails.main.humidity);
+          this.currentWind.push(Math.round(weatherDetails.wind.speed));
+        })
+      this.ws.getWeatherForecast(element).pipe(takeUntil(this.unsubscribe$)).subscribe((forecast: any) =>
+      {
+        /* RETRIEVE THE MAXIMUM & MINIMUM TEMPERATURE OF TODAY*/ 
+    let max = forecast.list[0].main.temp;
+    let min = forecast.list[0].main.temp;
+    forecast.list.forEach((value: any) => {
+      if (max < value.main.temp) {
+        max = value.main.temp;
+      }
+      if( min > value.main.temp){
+        min = value.main.temp
+      }
+    });
+    this.maxTemp.push(Math.round(max));
+    this.minTemp.push(Math.round(min));
+    })
     })
     this.isLoading = false;});
   }
-
-  // viewWeatherDetails(capital: string): void{
-  //   this.router.navigate(['/weather-details'], {queryParams:{country: capital}})
-  // }
-
+  
   /**
    * Whenever a component is destroyed, unsubscribe$.next() emit a new value so that the observer unsubscribe
    * to the observable using takeUntil()

@@ -14,6 +14,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   isDarkMode!: boolean;
   signUpForm!: FormGroup;
   private readonly unsubscribe$: Subject<void> = new Subject();
+  isLoading: boolean = false;
 
   constructor(private fb: FormBuilder, private firebase: FirebaseService, private router: Router, private pms: PageModeService) { }
 
@@ -41,9 +42,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   // Create a new user on form submission ( If the email exists, the new user will not be registered again )
-  onSubmit(): void{
-    this.firebase.signUpNewUser(this.userEmail.value, this.password.value);
+  async onSubmit(): Promise<void>{
+    this.isLoading = true;
+    await this.firebase.signUpNewUser(this.userEmail.value, this.password.value);
     this.signUpForm.reset();
+    this.isLoading = false;
   }
 
   ngOnDestroy(): void {

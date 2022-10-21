@@ -34,12 +34,30 @@ export class WeatherCardComponent implements OnInit, OnDestroy {
   }
 
   getCapitalWeather(capital: string): void{
-    this.ws.getWeatherState(capital).pipe(takeUntil(this.unsubscribe$)).subscribe(state => this.currentWeatherState = state);
-    this.ws.getCurrentTemp(capital).pipe(takeUntil(this.unsubscribe$)).subscribe(temp => this.currentTemp = temp);
-    this.ws.getCurrentHum(capital).pipe(takeUntil(this.unsubscribe$)).subscribe(humidity => this.currentHum = humidity);
-    this.ws.getCurrentWind(capital).pipe(takeUntil(this.unsubscribe$)).subscribe(windSpeed => this.currentWind = windSpeed);
-    this.ws.getMaxTemp(capital).pipe(takeUntil(this.unsubscribe$)).subscribe(maxTemp => this.maxTemp = maxTemp);
-    this.ws.getMinTemp(capital).pipe(takeUntil(this.unsubscribe$)).subscribe(minTemp => this.minTemp = minTemp);
+    this.ws.searchWeatherByCityName(this.capital).subscribe((weather: any) =>
+    {
+      this.currentWeatherState = weather['weather'][0].main;
+      this.currentTemp = Math.round(weather.main.temp);
+      this.currentHum = weather.main.humidity;
+      this.currentWind = Math.round(weather.wind.speed);
+    })
+    this.ws.getWeatherForecast(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe((forecast: any) =>
+    {
+      let max =forecast.list[0].main.temp;
+      forecast.list.forEach((value: any) => {
+        if (max < value.main.temp) {
+          max = value.main.temp;
+        }
+      });
+      this.maxTemp = Math.round(max)
+      let min = forecast.list[0].main.temp;
+      forecast.list.forEach((value: any) => {
+        if (min > value.main.temp) {
+          min = value.main.temp;
+        }
+      });
+      this.minTemp = Math.round(min)
+    })
   }
 
   getPageMode(): void{

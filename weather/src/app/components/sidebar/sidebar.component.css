@@ -43,7 +43,7 @@
 .slide-menu {
     box-sizing: border-box;
     /* Hide the menu out of the viewport [-103% (to left) along x-axis horizontally] */
-    transform: translateX(-103%);
+    transform: translateX(-150%);
     position: relative;
     top: 0;
     left: 0;
@@ -182,8 +182,8 @@
 }
 
 .mode-toggle__input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    --webkit-appearance: none;
+    --moz-appearance: none;
 }
 
 .mode-toggle__bg {

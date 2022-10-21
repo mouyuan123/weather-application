@@ -148,7 +148,7 @@ export class FirebaseService {
     try {
       await this.auth.signOut();
       this.idle.stop();
-      return localStorage.removeItem('user');
+      localStorage.clear();
     } catch (error: any) {
       return this.msg.showFailure(error.message);
     }

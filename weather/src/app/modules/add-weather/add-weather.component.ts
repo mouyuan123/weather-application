@@ -65,19 +65,36 @@ searchWeatherByCityName(weatherForm: NgForm): void{
 this.checkCapital(this.searchValue);
 if(this.isCapitalValid){
   this.capital = this.searchValue;
-  this.ws.getWeatherState(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(state => {this.currentWeatherState = state; 
-                                                            switch(this.currentWeatherState){
-                                                              case "Clouds": this.stateImg = '../../assets/images/cloudy-weather.png'; break;
-                                                              case 'Rain' ||'Drizzle': this.stateImg = '../../assets/images/heavy-rain-weather.png'; break;
-                                                              case 'Storm' || 'Thunderstorm': this.stateImg = '../../assets/images/storm-weather.png'; break;
-                                                              case 'Sunny' || 'Clear': this.stateImg ='../../assets/images/sunny-weather.png'; break;
-                                                              default: this.stateImg = '../../assets/images/snowing-weather.png';
-                                                            }});
-  this.ws.getCurrentTemp(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(temp => this.currentTemp = temp);
-  this.ws.getCurrentHum(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(humidity => this.currentHum = humidity);
-  this.ws.getCurrentWind(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(windSpeed => this.currentWind = windSpeed);
-  this.ws.getMaxTemp(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(maxTemp => this.maxTemp = maxTemp);
-  this.ws.getMinTemp(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe(minTemp => this.minTemp = minTemp);
+  this.ws.searchWeatherByCityName(this.capital).subscribe((weather: any) =>
+  {
+    this.currentWeatherState = weather['weather'][0].main;
+    switch(this.currentWeatherState){
+      case "Clouds": this.stateImg = '../../assets/images/cloudy-weather.png'; break;
+      case 'Rain' ||'Drizzle': this.stateImg = '../../assets/images/heavy-rain-weather.png'; break;
+      case 'Storm' || 'Thunderstorm': this.stateImg = '../../assets/images/storm-weather.png'; break;
+      case 'Sunny' || 'Clear': this.stateImg ='../../assets/images/sunny-weather.png'; break;
+      default: this.stateImg = '../../assets/images/snowing-weather.png';
+    };
+    this.currentTemp = Math.round(weather.main.temp);
+    this.currentHum = weather.main.humidity;
+    this.currentWind = Math.round(weather.wind.speed);
+  })
+  this.ws.getWeatherForecast(this.capital).pipe(takeUntil(this.unsubscribe$)).subscribe((forecast: any) =>
+  {
+   /* RETRIEVE THE MAXIMUM & MINIMUM TEMPERATURE OF TODAY*/ 
+   let max = forecast.list[0].main.temp;
+   let min = forecast.list[0].main.temp;
+   forecast.list.forEach((value: any) => {
+     if (max < value.main.temp) {
+       max = value.main.temp;
+     }
+     if( min > value.main.temp){
+       min = value.main.temp
+     }
+   });
+   this.maxTemp = Math.round(max);
+   this.minTemp = Math.round(min)
+  })
   this.toggleAddWeatherBtn();
 }
 this.resetForm();

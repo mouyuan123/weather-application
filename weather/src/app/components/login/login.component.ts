@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   //
   private readonly unsubscribe$: Subject<void> = new Subject();
+  isLoading: boolean = false;
 
   constructor(private pms: PageModeService, private fb: FormBuilder, private firebase: FirebaseService, private router: Router) { }
 
@@ -41,8 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   // Login the user to the home page if both the email and password is correct
-  onSubmit(): void{
-    this.firebase.signInUser(this.userEmail.value, this.password.value);
+   async onSubmit(): Promise<void>{
+    this.isLoading = true;
+    await this.firebase.signInUser(this.userEmail.value, this.password.value);
+    this.isLoading = false;
   }
 
   ngOnDestroy(): void{

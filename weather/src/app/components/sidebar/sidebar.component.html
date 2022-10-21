@@ -1,4 +1,4 @@
-<div class="container-fluid g-0 fixing">
+<div class="container-fluid g-0 fixing application-container">
     <app-header (isMenuOpened)="toggleMenu()"></app-header>
     <div class="row g-0">
         <aside *ngIf="firebase.isLoggedIn" class="side-menu__container" [ngClass]="{'side-menu__container-active': showMenu}" (click)="toggleMenu()">
@@ -45,7 +45,7 @@
                 </section>
             </nav>
         </aside>
-        <div class="col application-background" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color':isDarkMode, 'bg-color-light':!isDarkMode}">
+        <div class="col application-background application-container" [ngClass]="{'bg-color-dark':isDarkMode, 'font-contrast-color':isDarkMode, 'bg-color-light':!isDarkMode}">
             <!-- Main contents here -->
             <main>
                 <router-outlet></router-outlet>

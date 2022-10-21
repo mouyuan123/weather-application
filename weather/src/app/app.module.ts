@@ -24,6 +24,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { WeatherCardComponent } from './ui/weather-card/weather-card.component';
 
 // Services
 import { PageModeService } from './services/page-mode.service';
@@ -35,10 +38,6 @@ import { CheckIdleService } from './services/check-idle.service';
 
 // Environment
 import { environment } from 'src/environments/environment';
-import { PasswordResetComponent } from './components/password-reset/password-reset.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
-import { WeatherCardComponent } from './ui/weather-card/weather-card.component';
 
 
 @NgModule({
@@ -52,7 +51,6 @@ import { WeatherCardComponent } from './ui/weather-card/weather-card.component';
     SignUpComponent,
     PasswordResetComponent,
     ProfileComponent,
-    EditProfileComponent,
     WeatherCardComponent,
   ],
   imports: 
