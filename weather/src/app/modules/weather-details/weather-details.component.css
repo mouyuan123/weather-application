@@ -6,7 +6,7 @@
 }
 
 .details-page__wrapper-dark {
-  background: linear-gradient(#121349, #1020b4);
+  background: linear-gradient(#121349, #000c79);
 }
 
 .background-gradient__circle {
@@ -412,10 +412,11 @@
   }
 
   .forecast__container{
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    left: 10%;
   }
 }
+
 
 @media only screen and (max-width: 1399px){
   .forecast__container{

@@ -74,14 +74,14 @@
           <div class="col-12 col-xxl-5 d-flex justify-content-center">
             <img [src]="capitalUrl" alt="capital image" class="capital-img"/>
           </div>
-          <section class="col-12 mt-3 col-xxl-6 ms-xxl-3 mt-xxl-0 forecast__container">
-            <div class="day-weather__container" [ngSwitch]="true" *ngFor="let day of forecast | keyvalue: returnZero">
-              <span class="day-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.key}}</span>
-              <img class='forecast-condition__icon' src='{{day.value.stateImg}}' />
-              <span class="day-temp__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.avgTemp}}°</span>
-              <span class="day-state__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.predictedState}}</span>
-            </div> 
-          </section>
+            <section class="col-12 mt-3 col-xxl-6 ms-xxl-3 mt-xxl-0 forecast__container">
+              <div class="day-weather__container" [ngSwitch]="true" *ngFor="let day of forecast | keyvalue: returnZero">
+                <span class="day-name__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.key}}</span>
+                <img class='forecast-condition__icon' src='{{day.value.stateImg}}' />
+                <span class="day-temp__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.avgTemp}}°</span>
+                <span class="day-state__text" [ngClass]="{'font-contrast-color': isDarkMode}">{{day.value.predictedState}}</span>
+              </div> 
+            </section>
         </div>
       </div>
       <button type="button" class="btn btn-link position-absolute p-0 m-0 fs-5 delete-btn" data-bs-toggle="modal" data-bs-placement="right" data-bs-target="#deleteWeather" title="Delete added weather">Delete</button>
