@@ -10,7 +10,6 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 // Pop up the message when the user "idle" state is almost timeout
 import { DialogModule } from 'primeng/dialog';
 // import { ServiceWorkerModule } from '@angular/service-worker';
-import { LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 
 // Firebase Integration for sign up, login and storing capital chosen by myself
@@ -77,7 +76,6 @@ import { environment } from 'src/environments/environment';
     FirebaseService, 
     ConfirmationService,
     CheckIdleService,
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })
