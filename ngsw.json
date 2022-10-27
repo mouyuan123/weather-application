@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1666679880183,
+  "timestamp": 1666852709351,
   "index": "https://mouyuan123.github.io/weather-application/index.html",
   "assetGroups": [
     {
@@ -15,7 +15,7 @@
         "https://mouyuan123.github.io/weather-application/298.21cbe756842410cc.js",
         "https://mouyuan123.github.io/weather-application/favicon.ico",
         "https://mouyuan123.github.io/weather-application/index.html",
-        "https://mouyuan123.github.io/weather-application/main.50bafa0587205cb7.js",
+        "https://mouyuan123.github.io/weather-application/main.60fee29f911ed1a1.js",
         "https://mouyuan123.github.io/weather-application/manifest.webmanifest",
         "https://mouyuan123.github.io/weather-application/polyfills.a2732a65d2b0a08c.js",
         "https://mouyuan123.github.io/weather-application/runtime.0e5f992c13774319.js",
@@ -101,8 +101,8 @@
     "https://mouyuan123.github.io/weather-application/color.dae87a04d07ca92b.png": "ff4c4bcb2207891b292f544edb4da9d2df5d45cf",
     "https://mouyuan123.github.io/weather-application/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
     "https://mouyuan123.github.io/weather-application/hue.8b1818380241e6ac.png": "f81ae627637a684614aa726e206c73ce099a01fd",
-    "https://mouyuan123.github.io/weather-application/index.html": "af8ab5b30fadec5c47eb1b4e00bf9913b7630869",
-    "https://mouyuan123.github.io/weather-application/main.50bafa0587205cb7.js": "fafc3ae9b26e96cda28a9c8bbc66db9b32d97aa7",
+    "https://mouyuan123.github.io/weather-application/index.html": "b0a6c235b7a7cf82f4d35c0550c67b67707e7029",
+    "https://mouyuan123.github.io/weather-application/main.60fee29f911ed1a1.js": "1f25113c3670dc59fecf7da5ca9e70eb1a08c8e0",
     "https://mouyuan123.github.io/weather-application/manifest.webmanifest": "1c82d2f2fd2edbb40ccb767d33de1c97bc00a476",
     "https://mouyuan123.github.io/weather-application/polyfills.a2732a65d2b0a08c.js": "7876c43bc7adf5a26eeef240608baebba37f70a5",
     "https://mouyuan123.github.io/weather-application/primeicons.0112589c5695a9ed.ttf": "ceeb46d594fde5cc507cdf8b70e38e78fe47653c",
